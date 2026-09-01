@@ -11,3 +11,100 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum StaffType {
+  TEACHER
+  ADMINISTRATIVE
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SchoolProfile {
+  id         Int      @id @default(autoincrement())
+  schoolName String
+  shortInfo  String?
+  about      String?
+  history    String?
+  vision     String?
+  mission    String?
+  bannerUrl  String?
+  logoUrl    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Staff {
+  id          Int       @id @default(autoincrement())
+  name        String
+  position    String
+  type        StaffType
+  classTaught String?
+  photoUrl    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Achievement {
+  id          Int      @id @default(autoincrement())
+  competition String
+  studentName String
+  rank        String
+  level       String
+  year        Int
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Extracurricular {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Facility {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Spmb {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  portalUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id         Int      @id @default(autoincrement())
+  address    String?
+  phone      String?
+  email      String?
+  whatsapp   String?
+  location   String?
+  googleMaps String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model SocialMedia {
+  id        Int      @id @default(autoincrement())
+  platform  String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
