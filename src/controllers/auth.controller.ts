@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import prisma from "../config/prisma.js";
+import { prisma } from "../config/prisma.js";
 
 export const login = async (req: Request, res: Response) => {
  try {
