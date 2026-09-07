@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import { generateAccessToken } from "../utils/jwt.js";
 import { prisma } from "../config/prisma.js";
 
 export const login = async (req: Request, res: Response) => {
@@ -18,6 +19,11 @@ export const login = async (req: Request, res: Response) => {
    });
   }
 
+  const accessToken = generateAccessToken({
+   adminId: admin.id,
+   email: admin.email,
+  });
+
   // Bandingkan password dari user dengan passwordHash di database
   const passwordMatch = await bcrypt.compare(password, admin.passwordHash);
 
@@ -31,6 +37,7 @@ export const login = async (req: Request, res: Response) => {
   // Login berhasil
   return res.status(200).json({
    message: "Login berhasil",
+   accessToken,
    admin: {
     id: admin.id,
     email: admin.email,

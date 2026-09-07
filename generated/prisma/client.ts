@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type Admin = Prisma.AdminModel
 /**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
  * Model SchoolProfile
  * 
  */
