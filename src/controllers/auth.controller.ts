@@ -102,3 +102,67 @@ export const forgotPassword = async (req: Request, res: Response) => {
   });
  }
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+ try {
+  const { token, newPassword } = req.body;
+
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+  const resetToken = await prisma.passwordResetToken.findUnique({
+   where: {
+    tokenHash,
+   },
+  });
+
+  if (!resetToken) {
+   return res.status(400).json({
+    message: "Token reset password tidak valid",
+   });
+  }
+
+  if (resetToken.usedAt) {
+   return res.status(400).json({
+    message: "Token reset password sudah digunakan",
+   });
+  }
+
+  if (resetToken.expiresAt < new Date()) {
+   return res.status(400).json({
+    message: "Token reset password sudah kedaluwarsa",
+   });
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+
+  await prisma.$transaction([
+   prisma.admin.update({
+    where: {
+     id: resetToken.adminId,
+    },
+    data: {
+     passwordHash,
+    },
+   }),
+
+   prisma.passwordResetToken.update({
+    where: {
+     id: resetToken.id,
+    },
+    data: {
+     usedAt: new Date(),
+    },
+   }),
+  ]);
+
+  return res.status(200).json({
+   message: "Password berhasil diubah",
+  });
+ } catch (error) {
+  console.error(error);
+
+  return res.status(500).json({
+   message: "Terjadi kesalahan pada server",
+  });
+ }
+};
