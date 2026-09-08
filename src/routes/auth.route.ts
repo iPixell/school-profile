@@ -5,7 +5,7 @@ import {
  resetPassword,
 } from "../controllers/auth.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { LoginSchema } from "../validations/auth.validation.js";
+import { LoginSchema, ResetPasswordSchema } from "../validations/auth.validation.js";
 
 const router = Router();
 
