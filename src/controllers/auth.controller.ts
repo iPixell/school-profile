@@ -89,7 +89,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
    },
   });
 
-  console.log("Reset token:", resetToken);
+  const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+
+  console.log("Reset URL:", resetUrl);
 
   return res.status(200).json({
    message: "Jika email terdaftar, instruksi reset password akan dikirim.",
