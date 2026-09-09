@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { generateAccessToken } from "../utils/jwt.js";
 import { prisma } from "../config/prisma.js";
+import { sendPasswordResetEmail } from "../services/email.service.js";
 
 export const login = async (req: Request, res: Response) => {
  try {
@@ -91,8 +92,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
 
-  console.log("Reset URL:", resetUrl);
-
+  await sendPasswordResetEmail(email, resetUrl);
   return res.status(200).json({
    message: "Jika email terdaftar, instruksi reset password akan dikirim.",
   });
