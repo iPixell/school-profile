@@ -1,32 +1,29 @@
 import nodemailer from "nodemailer";
 
-const smtpHost = process.env.SMTP_HOST;
-const smtpPort = Number(process.env.SMTP_PORT);
-const smtpUser = process.env.SMTP_USER;
-const smtpPassword = process.env.SMTP_PASSWORD;
-
-if (!smtpHost || !smtpPort || !smtpUser || !smtpPassword) {
- throw new Error("SMTP configuration is not complete");
-}
-
-const transporter = nodemailer.createTransport({
- host: smtpHost,
- port: smtpPort,
- secure: smtpPort === 465,
- auth: {
-  user: smtpUser,
-  pass: smtpPassword,
- },
-});
-
 export const sendPasswordResetEmail = async (
  email: string,
  resetUrl: string,
 ): Promise<void> => {
- await transporter.sendMail({
-  from: smtpUser,
+ const testAccount = await nodemailer.createTestAccount();
+
+ const transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  secure: false,
+  auth: {
+   user: testAccount.user,
+   pass: testAccount.pass,
+  },
+ });
+
+ const info = await transporter.sendMail({
+  from: `"School Profile" <${testAccount.user}>`,
   to: email,
   subject: "Reset Password Admin",
   text: `Gunakan link berikut untuk mengatur ulang password: ${resetUrl}`,
  });
+
+ const previewUrl = nodemailer.getTestMessageUrl(info);
+
+ console.log("Preview email:", previewUrl);
 };
