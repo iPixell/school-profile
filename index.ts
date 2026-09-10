@@ -5,6 +5,7 @@ import schoolProfileRoute from "./src/routes/schoolProfile.route.js";
 import staffRoute from "./src/routes/staff.route.js";
 import achievementRoute from "./src/routes/achievement.route.js";
 import extracurricularRoute from "./src/routes/extracurricular.route.js";
+import facilityRoute from "./src/routes/facility.route.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/api/school-profile", schoolProfileRoute);
 app.use("/api/staff", staffRoute);
 app.use("/api/achievements", achievementRoute);
 app.use("/api/extracurriculars", extracurricularRoute);
+app.use("/api/facilities", facilityRoute);
 
 app.get("/", (req, res) => {
  res.json({
