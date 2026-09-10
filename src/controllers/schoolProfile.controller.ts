@@ -80,3 +80,31 @@ export const updateSchoolProfile = async (req: Request, res: Response) => {
   });
  }
 };
+
+export const deleteSchoolProfile = async (req: Request, res: Response) => {
+ try {
+  const existingProfile = await prisma.schoolProfile.findFirst();
+
+  if (!existingProfile) {
+   return res.status(404).json({
+    message: "Data profil sekolah belum tersedia",
+   });
+  }
+
+  await prisma.schoolProfile.delete({
+   where: {
+    id: existingProfile.id,
+   },
+  });
+
+  return res.status(200).json({
+   message: "Profil sekolah berhasil dihapus",
+  });
+ } catch (error) {
+  console.error(error);
+
+  return res.status(500).json({
+   message: "Terjadi kesalahan pada server",
+  });
+ }
+};
