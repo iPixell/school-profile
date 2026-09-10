@@ -2,12 +2,14 @@ import express from "express";
 import { prisma } from "./src/config/prisma";
 import authRoute from "./src/routes/auth.route.js";
 import schoolProfileRoute from "./src/routes/schoolProfile.route.js";
+import staffRoute from "./src/routes/staff.route.js";
 
 const app = express();
 
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/school-profile", schoolProfileRoute);
+app.use("/api/staff", staffRoute);
 
 app.get("/", (req, res) => {
  res.json({
