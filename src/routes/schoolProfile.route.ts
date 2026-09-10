@@ -19,4 +19,11 @@ router.post(
  createSchoolProfile,
 );
 
+router.put(
+ "/",
+ authenticate,
+ validate(CreateSchoolProfileSchema),
+ updateSchoolProfile,
+);
+
 export default router;
