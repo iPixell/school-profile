@@ -72,6 +72,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
   // Membuat token acak yang sulit ditebak.
   const resetToken = crypto.randomBytes(32).toString("hex");
 
+  await prisma.passwordResetToken.deleteMany({
+   where: {
+    adminId: admin.id,
+    usedAt: null,
+   },
+  });
+
   // Yang disimpan ke database adalah hash token,
   // bukan token aslinya.
   const tokenHash = crypto
