@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
  getSchoolProfile,
  createSchoolProfile,
+ updateSchoolProfile,
 } from "../controllers/schoolProfile.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
