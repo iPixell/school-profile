@@ -27,10 +27,6 @@ router.put(
  updateSchoolProfile,
 );
 
-router.delete(
-  "/",
-  authenticate,
-  deleteSchoolProfile,
-);
+router.delete("/", authenticate, deleteSchoolProfile);
 
 export default router;
