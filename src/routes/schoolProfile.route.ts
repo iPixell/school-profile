@@ -3,6 +3,7 @@ import {
  getSchoolProfile,
  createSchoolProfile,
  updateSchoolProfile,
+ deleteSchoolProfile,
 } from "../controllers/schoolProfile.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
@@ -24,6 +25,12 @@ router.put(
  authenticate,
  validate(CreateSchoolProfileSchema),
  updateSchoolProfile,
+);
+
+router.delete(
+  "/",
+  authenticate,
+  deleteSchoolProfile,
 );
 
 export default router;
