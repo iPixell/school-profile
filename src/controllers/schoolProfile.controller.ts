@@ -23,3 +23,30 @@ export const getSchoolProfile = async (_req: Request, res: Response) => {
   });
  }
 };
+
+export const createSchoolProfile = async (req: Request, res: Response) => {
+ try {
+  const existingProfile = await prisma.schoolProfile.findFirst();
+
+  if (existingProfile) {
+   return res.status(409).json({
+    message: "Profil sekolah sudah tersedia",
+   });
+  }
+
+  const schoolProfile = await prisma.schoolProfile.create({
+   data: req.body,
+  });
+
+  return res.status(201).json({
+   message: "Profil sekolah berhasil dibuat",
+   data: schoolProfile,
+  });
+ } catch (error) {
+  console.error(error);
+
+  return res.status(500).json({
+   message: "Terjadi kesalahan pada server",
+  });
+ }
+};
