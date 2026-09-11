@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
  getSocialMedias,
- createSocialMedias,
- updateSocialMedias,
- deleteSocialMedias,
+ createSocialMedia,
+ updateSocialMedia,
+ deleteSocialMedia,
 } from "../controllers/socialMedia.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
@@ -11,22 +11,22 @@ import { CreateSocialMediaSchema } from "../validations/socialMedia.validation.j
 
 const router = Router();
 
-router.get("/", getSocialMedias);
+router.get("/", getSocialMedia);
 
 router.post(
  "/",
  authenticate,
  validate(CreateSocialMediaSchema),
- createSocialMedias,
+ createSocialMedia,
 );
 
 router.put(
  "/:id",
  authenticate,
  validate(CreateSocialMediaSchema),
- updateSocialMedias,
+ updateSocialMedia,
 );
 
-router.delete("/:id", authenticate, deleteSocialMedias);
+router.delete("/:id", authenticate, deleteSocialMedia);
 
 export default router;
