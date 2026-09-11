@@ -11,7 +11,7 @@ import { CreateSocialMediaSchema } from "../validations/socialMedia.validation.j
 
 const router = Router();
 
-router.get("/", getSocialMedia);
+router.get("/", getSocialMedias);
 
 router.post(
  "/",
