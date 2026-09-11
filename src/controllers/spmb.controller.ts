@@ -8,7 +8,7 @@ export const getSpmb = async (_req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-   message: "Data spmb berhasil diambil",
+   message: "Data SPMB berhasil diambil",
    data: spmb,
   });
  } catch (error) {
@@ -27,7 +27,7 @@ export const createSpmb = async (req: Request, res: Response) => {
   });
 
   return res.status(201).json({
-   message: "Data spmb berhasil dibuat",
+   message: "Data SPMB berhasil dibuat",
    data: spmb,
   });
  } catch (error) {
@@ -45,7 +45,7 @@ export const updateSpmb = async (req: Request, res: Response) => {
 
   if (Number.isNaN(spmbId)) {
    return res.status(400).json({
-    message: "ID spmb tidak valid",
+    message: "ID SPMB tidak valid",
    });
   }
 
@@ -55,7 +55,7 @@ export const updateSpmb = async (req: Request, res: Response) => {
 
   if (!existingSpmb) {
    return res.status(404).json({
-    message: "Data spmb tidak ditemukan",
+    message: "Data SPMB tidak ditemukan",
    });
   }
 
@@ -65,7 +65,7 @@ export const updateSpmb = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-   message: "Data spmb berhasil diperbarui",
+   message: "Data SPMB berhasil diperbarui",
    data: spmb,
   });
  } catch (error) {
@@ -83,7 +83,7 @@ export const deleteSpmb = async (req: Request, res: Response) => {
 
   if (Number.isNaN(spmbId)) {
    return res.status(400).json({
-    message: "ID spmb tidak valid",
+    message: "ID SPMB tidak valid",
    });
   }
 
@@ -93,7 +93,7 @@ export const deleteSpmb = async (req: Request, res: Response) => {
 
   if (!existingSpmb) {
    return res.status(404).json({
-    message: "Data spmb tidak ditemukan",
+    message: "Data SPMB tidak ditemukan",
    });
   }
 
@@ -102,7 +102,7 @@ export const deleteSpmb = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-   message: "Data spmb berhasil dihapus",
+   message: "Data SPMB berhasil dihapus",
   });
  } catch (error) {
   console.error(error);
