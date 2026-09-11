@@ -7,6 +7,7 @@ import achievementRoute from "./src/routes/achievement.route.js";
 import extracurricularRoute from "./src/routes/extracurricular.route.js";
 import facilityRoute from "./src/routes/facility.route.js";
 import spmbRoute from "./src/routes/spmb.route.js";
+import contactRoute from "./src/routes/contact.route.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/api/achievements", achievementRoute);
 app.use("/api/extracurriculars", extracurricularRoute);
 app.use("/api/facilities", facilityRoute);
 app.use("/api/spmb", spmbRoute);
+app.use("/api/contact", contactRoute);
 
 app.get("/", (req, res) => {
  res.json({
