@@ -4,7 +4,7 @@ import {
  createSpmb,
  updateSpmb,
  deleteSpmb,
-} from "../controllers/staff.controller.js";
+} from "../controllers/spmb.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { CreateSpmbSchema } from "../validations/spmb.validation.js";
