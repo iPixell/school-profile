@@ -8,6 +8,7 @@ import extracurricularRoute from "./src/routes/extracurricular.route.js";
 import facilityRoute from "./src/routes/facility.route.js";
 import spmbRoute from "./src/routes/spmb.route.js";
 import contactRoute from "./src/routes/contact.route.js";
+import socialMediaRoute from "./src/routes/socialMedia.route.ts";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/api/extracurriculars", extracurricularRoute);
 app.use("/api/facilities", facilityRoute);
 app.use("/api/spmb", spmbRoute);
 app.use("/api/contacts", contactRoute);
+apl.use("/api/social-medias", socialMediaRoute);
 
 app.get("/", (req, res) => {
  res.json({
