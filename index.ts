@@ -19,7 +19,7 @@ app.use("/api/achievements", achievementRoute);
 app.use("/api/extracurriculars", extracurricularRoute);
 app.use("/api/facilities", facilityRoute);
 app.use("/api/spmb", spmbRoute);
-app.use("/api/contact", contactRoute);
+app.use("/api/contacts", contactRoute);
 
 app.get("/", (req, res) => {
  res.json({
