@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 
-export const getFacilities = async (_req: Request, res: Response) => {
+export const getSocialMedias = async (_req: Request, res: Response) => {
  try {
   const socialMedias = await prisma.socialMedia.findMany({
    orderBy: { createdAt: "desc" },

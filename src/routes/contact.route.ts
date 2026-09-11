@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
- getContact,
+ getContacts,
  createContact,
  updateContact,
  deleteContact,
@@ -11,7 +11,7 @@ import { CreateContactSchema } from "../validations/contact.validation.js";
 
 const router = Router();
 
-router.get("/", getContact);
+router.get("/", getContacts);
 
 router.post("/", authenticate, validate(CreateContactSchema), createContact);
 
