@@ -21,7 +21,7 @@ app.use("/api/extracurriculars", extracurricularRoute);
 app.use("/api/facilities", facilityRoute);
 app.use("/api/spmb", spmbRoute);
 app.use("/api/contacts", contactRoute);
-apl.use("/api/social-medias", socialMediaRoute);
+app.use("/api/social-medias", socialMediaRoute);
 
 app.get("/", (req, res) => {
  res.json({
