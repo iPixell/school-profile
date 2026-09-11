@@ -11,7 +11,7 @@ export const getContacts = async (_req: Request, res: Response) => {
 
   return res.status(200).json({
    message: "Data kontak berhasil diambil",
-   data: contact,
+   data: contacts,
   });
  } catch (error) {
   console.error(error);
