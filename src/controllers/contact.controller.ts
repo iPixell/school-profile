@@ -1,16 +1,16 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 
-export const getContact = async (_req: Request, res: Response) => {
+export const getContacts = async (_req: Request, res: Response) => {
  try {
-  const contact = await prisma.contact.findMany({
+  const contacts = await prisma.contact.findMany({
    orderBy: {
     createdAt: "desc",
    },
   });
 
   return res.status(200).json({
-   message: "Data contact berhasil diambil",
+   message: "Data kontak berhasil diambil",
    data: contact,
   });
  } catch (error) {
@@ -29,7 +29,7 @@ export const createContact = async (req: Request, res: Response) => {
   });
 
   return res.status(201).json({
-   message: "Data contact berhasil dibuat",
+   message: "Data kontak berhasil dibuat",
    data: contact,
   });
  } catch (error) {
@@ -47,7 +47,7 @@ export const updateContact = async (req: Request, res: Response) => {
 
   if (Number.isNaN(contactId)) {
    return res.status(400).json({
-    message: "ID contact tidak valid",
+    message: "ID kontak tidak valid",
    });
   }
 
@@ -59,7 +59,7 @@ export const updateContact = async (req: Request, res: Response) => {
 
   if (!existingContact) {
    return res.status(404).json({
-    message: "Data contact tidak ditemukan",
+    message: "Data kontak tidak ditemukan",
    });
   }
 
@@ -71,7 +71,7 @@ export const updateContact = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-   message: "Data contact berhasil diperbarui",
+   message: "Data kontak berhasil diperbarui",
    data: contact,
   });
  } catch (error) {
@@ -89,7 +89,7 @@ export const deleteContact = async (req: Request, res: Response) => {
 
   if (Number.isNaN(contactId)) {
    return res.status(400).json({
-    message: "ID contact tidak valid",
+    message: "ID kontak tidak valid",
    });
   }
 
@@ -101,7 +101,7 @@ export const deleteContact = async (req: Request, res: Response) => {
 
   if (!existingContact) {
    return res.status(404).json({
-    message: "Data contact tidak ditemukan",
+    message: "Data kontak tidak ditemukan",
    });
   }
 
@@ -112,7 +112,7 @@ export const deleteContact = async (req: Request, res: Response) => {
   });
 
   return res.status(200).json({
-   message: "Data contact berhasil dihapus",
+   message: "Data kontak berhasil dihapus",
   });
  } catch (error) {
   console.error(error);
