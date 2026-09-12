@@ -7,7 +7,10 @@ import {
 } from "../controllers/socialMedia.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateSocialMediaSchema } from "../validations/socialMedia.validation.js";
+import {
+ CreateSocialMediaSchema,
+ UpdateSocialMediaSchema,
+} from "../validations/socialMedia.validation.js";
 
 const router = Router();
 
@@ -23,7 +26,7 @@ router.post(
 router.put(
  "/:id",
  authenticate,
- validate(CreateSocialMediaSchema),
+ validate(UpdateSocialMediaSchema),
  updateSocialMedia,
 );
 
