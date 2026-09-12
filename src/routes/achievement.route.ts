@@ -7,7 +7,10 @@ import {
 } from "../controllers/achievement.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateAchievementSchema } from "../validations/achievement.validation.js";
+import {
+ CreateAchievementSchema,
+ UpdateAchievementSchema,
+} from "../validations/achievement.validation.js";
 
 const router = Router();
 
@@ -23,7 +26,7 @@ router.post(
 router.put(
  "/:id",
  authenticate,
- validate(CreateAchievementSchema),
+ validate(UpdateAchievementSchema),
  updateAchievement,
 );
 
