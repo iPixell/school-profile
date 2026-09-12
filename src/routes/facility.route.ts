@@ -7,7 +7,10 @@ import {
 } from "../controllers/facility.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateFacilitySchema } from "../validations/facility.validation.js";
+import {
+ CreateFacilitySchema,
+ UpdateFacilitySchema,
+} from "../validations/facility.validation.js";
 
 const router = Router();
 
