@@ -7,7 +7,10 @@ import {
 } from "../controllers/contact.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateContactSchema } from "../validations/contact.validation.js";
+import {
+ CreateContactSchema,
+ UpdateContactSchema,
+} from "../validations/contact.validation.js";
 
 const router = Router();
 
@@ -15,7 +18,7 @@ router.get("/", getContacts);
 
 router.post("/", authenticate, validate(CreateContactSchema), createContact);
 
-router.put("/:id", authenticate, validate(CreateContactSchema), updateContact);
+router.put("/:id", authenticate, validate(UpdateContactSchema), updateContact);
 
 router.delete("/:id", authenticate, deleteContact);
 

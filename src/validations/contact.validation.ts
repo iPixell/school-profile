@@ -8,3 +8,5 @@ export const CreateContactSchema = z.object({
  location: z.string().optional(),
  googleMaps: z.string().url("Format URL Google Maps tidak valid").optional(),
 });
+
+export const UpdateContactSchema = CreateContactSchema.partial();
