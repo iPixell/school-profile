@@ -18,7 +18,7 @@ router.post("/", authenticate, validate(CreateFacilitySchema), createFacility);
 router.put(
  "/:id",
  authenticate,
- validate(CreateFacilitySchema),
+ validate(UpdateFacilitySchema),
  updateFacility,
 );
 

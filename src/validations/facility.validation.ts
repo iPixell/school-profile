@@ -5,3 +5,5 @@ export const CreateFacilitySchema = z.object({
  description: z.string().optional(),
  photoUrl: z.string().url("Format URL foto tidak valid").optional(),
 });
+
+export const UpdateFacilitySchema = CreateFacilitySchema.partial();
