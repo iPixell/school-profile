@@ -5,3 +5,5 @@ export const CreateSpmbSchema = z.object({
  description: z.string().optional(),
  portalUrl: z.string().url("Format URL portal SPMB tidak valid").optional(),
 });
+
+export const UpdateSpmbSchema = CreateSpmbSchema.partial();
