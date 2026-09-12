@@ -8,7 +8,7 @@ import extracurricularRoute from "./src/routes/extracurricular.route.js";
 import facilityRoute from "./src/routes/facility.route.js";
 import spmbRoute from "./src/routes/spmb.route.js";
 import contactRoute from "./src/routes/contact.route.js";
-import socialMediaRoute from "./src/routes/socialMedia.route.ts";
+import socialMediaRoute from "./src/routes/socialMedia.route.js";
 
 const app = express();
 
