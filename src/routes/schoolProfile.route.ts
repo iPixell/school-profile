@@ -11,6 +11,7 @@ import {
  CreateSchoolProfileSchema,
  UpdateSchoolProfileSchema,
 } from "../validations/schoolProfile.validation.js";
+import { uploadImage } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
@@ -19,6 +20,10 @@ router.get("/", getSchoolProfile);
 router.post(
  "/",
  authenticate,
+ uploadImage.fields([
+  { name: "banner", maxCount: 1 },
+  { name: "logo", maxCount: 1 },
+ ]),
  validate(CreateSchoolProfileSchema),
  createSchoolProfile,
 );
