@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "./src/config/prisma";
+import cors from "cors";
 import authRoute from "./src/routes/auth.route.js";
 import schoolProfileRoute from "./src/routes/schoolProfile.route.js";
 import staffRoute from "./src/routes/staff.route.js";
@@ -13,6 +14,7 @@ import { errorHandler } from "./src/middlewares/error.middleware.js";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/school-profile", schoolProfileRoute);
