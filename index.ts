@@ -9,6 +9,7 @@ import facilityRoute from "./src/routes/facility.route.js";
 import spmbRoute from "./src/routes/spmb.route.js";
 import contactRoute from "./src/routes/contact.route.js";
 import socialMediaRoute from "./src/routes/socialMedia.route.js";
+import { errorHandler } from "./src/middlewares/error.middleware.js";
 
 const app = express();
 
@@ -44,6 +45,8 @@ app.get("/test-db", async (req, res) => {
   });
  }
 });
+
+app.use(errorHandler);
 
 app.listen(3000, () => {
  console.log("Server running on http://localhost:3000");
