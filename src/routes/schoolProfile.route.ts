@@ -11,23 +11,22 @@ import {
  CreateSchoolProfileSchema,
  UpdateSchoolProfileSchema,
 } from "../validations/schoolProfile.validation.js";
-import { uploadImage } from "../middlewares/upload.middleware.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
 router.get("/", getSchoolProfile);
 
-router.post(
+router.put(
  "/",
  authenticate,
- uploadImage.fields([
+ uploadImageMiddleware.fields([
   { name: "banner", maxCount: 1 },
   { name: "logo", maxCount: 1 },
  ]),
- validate(CreateSchoolProfileSchema),
- createSchoolProfile,
+ validate(UpdateSchoolProfileSchema),
+ updateSchoolProfile,
 );
-
 router.put(
  "/",
  authenticate,

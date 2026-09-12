@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config";
 import { prisma } from "./src/config/prisma";
 import cors from "cors";
 import authRoute from "./src/routes/auth.route.js";
@@ -13,6 +14,7 @@ import socialMediaRoute from "./src/routes/socialMedia.route.js";
 import { errorHandler } from "./src/middlewares/error.middleware.js";
 
 const app = express();
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -50,6 +52,6 @@ app.get("/test-db", async (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => {
- console.log("Server running on http://localhost:3000");
+app.listen(PORT, () => {
+ console.log(`Server running on http://localhost:${PORT}`);
 });

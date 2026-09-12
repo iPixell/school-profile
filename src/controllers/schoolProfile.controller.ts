@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import { uploadImage } from "../services/storage.service.js";
 
 export const getSchoolProfile = async (_req: Request, res: Response) => {
  try {
@@ -34,8 +35,36 @@ export const createSchoolProfile = async (req: Request, res: Response) => {
    });
   }
 
+  const files = req.files as {
+   banner?: Express.Multer.File[];
+   logo?: Express.Multer.File[];
+  };
+
+  let bannerUrl: string | undefined;
+  let logoUrl: string | undefined;
+
+  if (files?.banner?.[0]) {
+   bannerUrl = await uploadImage(
+    files.banner[0].buffer,
+    `school-profile/banner-${Date.now()}`,
+    files.banner[0].mimetype,
+   );
+  }
+
+  if (files?.logo?.[0]) {
+   logoUrl = await uploadImage(
+    files.logo[0].buffer,
+    `school-profile/logo-${Date.now()}`,
+    files.logo[0].mimetype,
+   );
+  }
+
   const schoolProfile = await prisma.schoolProfile.create({
-   data: req.body,
+   data: {
+    ...req.body,
+    bannerUrl,
+    logoUrl,
+   },
   });
 
   return res.status(201).json({

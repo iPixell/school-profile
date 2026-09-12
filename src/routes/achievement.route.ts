@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
  getAchievements,
+ getLatestAchievements,
  createAchievement,
  updateAchievement,
  deleteAchievement,
@@ -15,6 +16,7 @@ import {
 const router = Router();
 
 router.get("/", getAchievements);
+router.get("/latest", getLatestAchievements);
 
 router.post(
  "/",
