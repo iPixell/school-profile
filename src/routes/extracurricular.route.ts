@@ -7,7 +7,10 @@ import {
 } from "../controllers/extracurricular.controller.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateExtracurricularSchema } from "../validations/extracurricular.validation.js";
+import {
+ CreateExtracurricularSchema,
+ UpdateExtracurricularSchema,
+} from "../validations/extracurricular.validation.js";
 
 const router = Router();
 
@@ -23,7 +26,7 @@ router.post(
 router.put(
  "/:id",
  authenticate,
- validate(CreateExtracurricularSchema),
+ validate(UpdateExtracurricularSchema),
  updateExtracurricular,
 );
 

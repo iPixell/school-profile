@@ -5,3 +5,6 @@ export const CreateExtracurricularSchema = z.object({
  description: z.string().optional(),
  photoUrl: z.string().url("Format URL foto tidak valid").optional(),
 });
+
+export const UpdateExtracurricularSchema =
+ CreateExtracurricularSchema.partial();
