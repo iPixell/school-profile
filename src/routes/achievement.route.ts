@@ -12,6 +12,7 @@ import {
  CreateAchievementSchema,
  UpdateAchievementSchema,
 } from "../validations/achievement.validation.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.get("/latest", getLatestAchievements);
 router.post(
  "/",
  authenticate,
+ uploadImageMiddleware.single("photo"),
  validate(CreateAchievementSchema),
  createAchievement,
 );
@@ -28,6 +30,7 @@ router.post(
 router.put(
  "/:id",
  authenticate,
+ uploadImageMiddleware.single("photo"),
  validate(UpdateAchievementSchema),
  updateAchievement,
 );
