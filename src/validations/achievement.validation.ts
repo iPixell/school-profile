@@ -5,7 +5,7 @@ export const CreateAchievementSchema = z.object({
  studentName: z.string().min(1, "Nama siswa wajib diisi"),
  rank: z.string().min(1, "Juara wajib diisi"),
  level: z.string().min(1, "Tingkat kompetisi wajib diisi"),
- year: z
+ year: z.coerce
   .number()
   .int("Tahun harus berupa bilangan bulat")
   .min(1900, "Tahun tidak valid"),
