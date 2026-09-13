@@ -30,3 +30,15 @@ export const deleteImage = async (filePath: string): Promise<void> => {
   throw error;
  }
 };
+
+export const getFilePathFromUrl = (publicUrl: string): string => {
+ const marker = `/storage/v1/object/public/${BUCKET_NAME}/`;
+
+ const index = publicUrl.indexOf(marker);
+
+ if (index === -1) {
+  throw new Error("URL gambar Supabase tidak valid");
+ }
+
+ return publicUrl.substring(index + marker.length);
+};
