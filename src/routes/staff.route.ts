@@ -11,15 +11,27 @@ import {
  CreateStaffSchema,
  UpdateStaffSchema,
 } from "../validations/staff.validation.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
 router.get("/", getStaff);
 
-router.post("/", authenticate, validate(CreateStaffSchema), createStaff);
+router.post(
+ "/",
+ authenticate,
+ uploadImageMiddleware.single("photo"),
+ validate(CreateStaffSchema),
+ createStaff,
+);
 
-router.put("/:id", authenticate, validate(UpdateStaffSchema), updateStaff);
-
+router.put(
+ "/:id",
+ authenticate,
+ uploadImageMiddleware.single("photo"),
+ validate(UpdateStaffSchema),
+ updateStaff,
+);
 router.delete("/:id", authenticate, deleteStaff);
 
 export default router;

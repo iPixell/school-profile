@@ -17,6 +17,17 @@ const router = Router();
 
 router.get("/", getSchoolProfile);
 
+router.post(
+ "/",
+ authenticate,
+ uploadImageMiddleware.fields([
+  { name: "banner", maxCount: 1 },
+  { name: "logo", maxCount: 1 },
+ ]),
+ validate(CreateSchoolProfileSchema),
+ createSchoolProfile,
+);
+
 router.put(
  "/",
  authenticate,
@@ -24,12 +35,6 @@ router.put(
   { name: "banner", maxCount: 1 },
   { name: "logo", maxCount: 1 },
  ]),
- validate(UpdateSchoolProfileSchema),
- updateSchoolProfile,
-);
-router.put(
- "/",
- authenticate,
  validate(UpdateSchoolProfileSchema),
  updateSchoolProfile,
 );
