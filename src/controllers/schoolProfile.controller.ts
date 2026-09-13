@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
-import { uploadImage } from "../services/storage.service.js";
+import {
+ uploadImage,
+ deleteImage,
+ getFilePathFromUrl,
+} from "../services/storage.service.js";
 
 export const getSchoolProfile = async (_req: Request, res: Response) => {
  try {
@@ -99,19 +103,35 @@ export const updateSchoolProfile = async (req: Request, res: Response) => {
   let logoUrl = existingProfile.logoUrl;
 
   if (files?.banner?.[0]) {
+   const newBannerPath = `school-profile/banner-${Date.now()}`;
+
    bannerUrl = await uploadImage(
     files.banner[0].buffer,
-    `school-profile/banner-${Date.now()}`,
+    newBannerPath,
     files.banner[0].mimetype,
    );
+
+   if (existingProfile.bannerUrl) {
+    const oldBannerPath = getFilePathFromUrl(existingProfile.bannerUrl);
+
+    await deleteImage(oldBannerPath);
+   }
   }
 
   if (files?.logo?.[0]) {
+   const newLogoPath = `school-profile/logo-${Date.now()}`;
+
    logoUrl = await uploadImage(
     files.logo[0].buffer,
-    `school-profile/logo-${Date.now()}`,
+    newLogoPath,
     files.logo[0].mimetype,
    );
+
+   if (existingProfile.logoUrl) {
+    const oldLogoPath = getFilePathFromUrl(existingProfile.logoUrl);
+
+    await deleteImage(oldLogoPath);
+   }
   }
 
   const schoolProfile = await prisma.schoolProfile.update({
