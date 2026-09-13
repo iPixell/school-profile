@@ -22,3 +22,11 @@ export const uploadImage = async (
 
  return data.publicUrl;
 };
+
+export const deleteImage = async (filePath: string): Promise<void> => {
+ const { error } = await supabase.storage.from(BUCKET_NAME).remove([filePath]);
+
+ if (error) {
+  throw error;
+ }
+};
