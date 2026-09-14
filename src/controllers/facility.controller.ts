@@ -1,5 +1,10 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import {
+ uploadImage,
+ deleteImage,
+ getFilePathFromUrl,
+} from "../services/storage.service.js";
 
 export const getFacilities = async (_req: Request, res: Response) => {
  try {
@@ -22,8 +27,23 @@ export const getFacilities = async (_req: Request, res: Response) => {
 
 export const createFacility = async (req: Request, res: Response) => {
  try {
+  const file = req.file;
+
+  let photoUrl: string | undefined;
+
+  if (file) {
+   photoUrl = await uploadImage(
+    file.buffer,
+    `facilities/photo-${Date.now()}`,
+    file.mimetype,
+   );
+  }
+
   const facility = await prisma.facility.create({
-   data: req.body,
+   data: {
+    ...req.body,
+    photoUrl,
+   },
   });
 
   return res.status(201).json({
@@ -50,7 +70,9 @@ export const updateFacility = async (req: Request, res: Response) => {
   }
 
   const existingFacility = await prisma.facility.findUnique({
-   where: { id: facilityId },
+   where: {
+    id: facilityId,
+   },
   });
 
   if (!existingFacility) {
@@ -59,9 +81,30 @@ export const updateFacility = async (req: Request, res: Response) => {
    });
   }
 
+  let photoUrl = existingFacility.photoUrl;
+
+  if (req.file) {
+   photoUrl = await uploadImage(
+    req.file.buffer,
+    `facilities/photo-${Date.now()}`,
+    req.file.mimetype,
+   );
+
+   if (existingFacility.photoUrl) {
+    const oldFilePath = getFilePathFromUrl(existingFacility.photoUrl);
+
+    await deleteImage(oldFilePath);
+   }
+  }
+
   const facility = await prisma.facility.update({
-   where: { id: facilityId },
-   data: req.body,
+   where: {
+    id: facilityId,
+   },
+   data: {
+    ...req.body,
+    photoUrl,
+   },
   });
 
   return res.status(200).json({
@@ -88,7 +131,9 @@ export const deleteFacility = async (req: Request, res: Response) => {
   }
 
   const existingFacility = await prisma.facility.findUnique({
-   where: { id: facilityId },
+   where: {
+    id: facilityId,
+   },
   });
 
   if (!existingFacility) {
@@ -97,8 +142,16 @@ export const deleteFacility = async (req: Request, res: Response) => {
    });
   }
 
+  if (existingFacility.photoUrl) {
+   const filePath = getFilePathFromUrl(existingFacility.photoUrl);
+
+   await deleteImage(filePath);
+  }
+
   await prisma.facility.delete({
-   where: { id: facilityId },
+   where: {
+    id: facilityId,
+   },
   });
 
   return res.status(200).json({

@@ -11,16 +11,23 @@ import {
  CreateFacilitySchema,
  UpdateFacilitySchema,
 } from "../validations/facility.validation.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
 router.get("/", getFacilities);
 
-router.post("/", authenticate, validate(CreateFacilitySchema), createFacility);
-
+router.post(
+ "/",
+ authenticate,
+ uploadImageMiddleware.single("photo"),
+ validate(CreateFacilitySchema),
+ createFacility,
+);
 router.put(
  "/:id",
  authenticate,
+ uploadImageMiddleware.single("photo"),
  validate(UpdateFacilitySchema),
  updateFacility,
 );
