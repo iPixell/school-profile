@@ -14,7 +14,6 @@ import {
 const router = Router();
 
 router.post("/forgot-password", validate(ForgotPasswordSchema), forgotPassword);
-router.post("/forgot-password", forgotPassword);
 
 router.post("/reset-password", validate(ResetPasswordSchema), resetPassword);
 
