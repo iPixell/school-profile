@@ -11,6 +11,7 @@ import {
  CreateExtracurricularSchema,
  UpdateExtracurricularSchema,
 } from "../validations/extracurricular.validation.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get("/", getExtracurriculars);
 router.post(
  "/",
  authenticate,
+ uploadImageMiddleware.single("photo"),
  validate(CreateExtracurricularSchema),
  createExtracurricular,
 );
@@ -26,6 +28,7 @@ router.post(
 router.put(
  "/:id",
  authenticate,
+ uploadImageMiddleware.single("photo"),
  validate(UpdateExtracurricularSchema),
  updateExtracurricular,
 );

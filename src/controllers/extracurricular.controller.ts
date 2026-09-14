@@ -1,5 +1,10 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import {
+ uploadImage,
+ deleteImage,
+ getFilePathFromUrl,
+} from "../services/storage.service.js";
 
 export const getExtracurriculars = async (_req: Request, res: Response) => {
  try {
@@ -22,8 +27,23 @@ export const getExtracurriculars = async (_req: Request, res: Response) => {
 
 export const createExtracurricular = async (req: Request, res: Response) => {
  try {
+  const file = req.file;
+
+  let photoUrl: string | undefined;
+
+  if (file) {
+   photoUrl = await uploadImage(
+    file.buffer,
+    `extracurriculars/photo-${Date.now()}`,
+    file.mimetype,
+   );
+  }
+
   const extracurricular = await prisma.extracurricular.create({
-   data: req.body,
+   data: {
+    ...req.body,
+    photoUrl,
+   },
   });
 
   return res.status(201).json({
@@ -50,7 +70,9 @@ export const updateExtracurricular = async (req: Request, res: Response) => {
   }
 
   const existingExtracurricular = await prisma.extracurricular.findUnique({
-   where: { id: extracurricularId },
+   where: {
+    id: extracurricularId,
+   },
   });
 
   if (!existingExtracurricular) {
@@ -59,9 +81,30 @@ export const updateExtracurricular = async (req: Request, res: Response) => {
    });
   }
 
+  let photoUrl = existingExtracurricular.photoUrl;
+
+  if (req.file) {
+   photoUrl = await uploadImage(
+    req.file.buffer,
+    `extracurriculars/photo-${Date.now()}`,
+    req.file.mimetype,
+   );
+
+   if (existingExtracurricular.photoUrl) {
+    const oldFilePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
+
+    await deleteImage(oldFilePath);
+   }
+  }
+
   const extracurricular = await prisma.extracurricular.update({
-   where: { id: extracurricularId },
-   data: req.body,
+   where: {
+    id: extracurricularId,
+   },
+   data: {
+    ...req.body,
+    photoUrl,
+   },
   });
 
   return res.status(200).json({
@@ -88,7 +131,9 @@ export const deleteExtracurricular = async (req: Request, res: Response) => {
   }
 
   const existingExtracurricular = await prisma.extracurricular.findUnique({
-   where: { id: extracurricularId },
+   where: {
+    id: extracurricularId,
+   },
   });
 
   if (!existingExtracurricular) {
@@ -97,8 +142,16 @@ export const deleteExtracurricular = async (req: Request, res: Response) => {
    });
   }
 
+  if (existingExtracurricular.photoUrl) {
+   const filePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
+
+   await deleteImage(filePath);
+  }
+
   await prisma.extracurricular.delete({
-   where: { id: extracurricularId },
+   where: {
+    id: extracurricularId,
+   },
   });
 
   return res.status(200).json({
