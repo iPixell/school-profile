@@ -49,11 +49,11 @@ export const updateSocialMedia = async (req: Request, res: Response) => {
    });
   }
 
-  const existingFacility = await prisma.socialMedia.findUnique({
+  const existingSocialMedia = await prisma.socialMedia.findUnique({
    where: { id: socialMediaId },
   });
 
-  if (!existingFacility) {
+  if (!existingSocialMedia) {
    return res.status(404).json({
     message: "Data media sosial tidak ditemukan",
    });
@@ -87,11 +87,11 @@ export const deleteSocialMedia = async (req: Request, res: Response) => {
    });
   }
 
-  const existingFacility = await prisma.socialMedia.findUnique({
+  const existingSocialMedia = await prisma.socialMedia.findUnique({
    where: { id: socialMediaId },
   });
 
-  if (!existingFacility) {
+  if (!existingSocialMedia) {
    return res.status(404).json({
     message: "Data media sosial tidak ditemukan",
    });
