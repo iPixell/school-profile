@@ -9,20 +9,20 @@ export const login = async (req: Request, res: Response) => {
  try {
   const { email, password } = req.body;
 
-  // Cari akun Admin berdasarkan email
-  const admin = await prisma.admin.findUnique({
+  // Cari akun user berdasarkan email
+  const user = await prisma.user.findUnique({
    where: { email },
   });
 
   // Kalau akun tidak ditemukan
-  if (!admin) {
+  if (!user) {
    return res.status(401).json({
     message: "Email atau password salah",
    });
   }
 
   // Bandingkan password dari user dengan passwordHash di database
-  const passwordMatch = await bcrypt.compare(password, admin.passwordHash);
+  const passwordMatch = await bcrypt.compare(password, user.passwordHash);
 
   // Kalau password salah
   if (!passwordMatch) {
@@ -33,17 +33,17 @@ export const login = async (req: Request, res: Response) => {
 
   // Kalau password benar, baru buat access token
   const accessToken = generateAccessToken({
-   adminId: admin.id,
-   email: admin.email,
+   userId: user.id,
+   email: user.email,
   });
 
   // Login berhasil
   return res.status(200).json({
    message: "Login berhasil",
    accessToken,
-   admin: {
-    id: admin.id,
-    email: admin.email,
+   user: {
+    id: user.id,
+    email: user.email,
    },
   });
  } catch (error) {
@@ -59,12 +59,12 @@ export const forgotPassword = async (req: Request, res: Response) => {
  try {
   const { email } = req.body;
 
-  const admin = await prisma.admin.findUnique({
+  const user = await prisma.user.findUnique({
    where: { email },
   });
 
   // Jangan memberi tahu apakah email tersebut terdaftar atau tidak.
-  if (!admin) {
+  if (!user) {
    return res.status(200).json({
     message: "Jika email terdaftar, instruksi reset password akan dikirim.",
    });
@@ -75,7 +75,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   await prisma.passwordResetToken.deleteMany({
    where: {
-    adminId: admin.id,
+    userId: user.id,
     usedAt: null,
    },
   });
@@ -92,7 +92,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   await prisma.passwordResetToken.create({
    data: {
-    adminId: admin.id,
+    userId: user.id,
     tokenHash,
     expiresAt,
    },
@@ -146,9 +146,9 @@ export const resetPassword = async (req: Request, res: Response) => {
   const passwordHash = await bcrypt.hash(newPassword, 12);
 
   await prisma.$transaction([
-   prisma.admin.update({
+   prisma.user.update({
     where: {
-     id: resetToken.adminId,
+     id: resetToken.userId,
     },
     data: {
      passwordHash,

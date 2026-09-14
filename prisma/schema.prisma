@@ -17,7 +17,7 @@ enum StaffType {
   ADMINISTRATIVE
 }
 
-model Admin {
+model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   passwordHash String
@@ -29,13 +29,13 @@ model Admin {
 
 model PasswordResetToken {
   id        Int      @id @default(autoincrement())
-  adminId   Int
+  userId    Int
   tokenHash String   @unique
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime @default(now())
 
-  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model SchoolProfile {

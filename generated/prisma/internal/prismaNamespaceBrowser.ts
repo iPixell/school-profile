@@ -51,7 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Admin: 'Admin',
+  User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   SchoolProfile: 'SchoolProfile',
   Staff: 'Staff',
@@ -79,7 +79,7 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const AdminScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   passwordHash: 'passwordHash',
@@ -87,12 +87,12 @@ export const AdminScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {
   id: 'id',
-  adminId: 'adminId',
+  userId: 'userId',
   tokenHash: 'tokenHash',
   expiresAt: 'expiresAt',
   usedAt: 'usedAt',

@@ -7,7 +7,7 @@ if (!JWT_SECRET) {
 }
 
 export interface TokenPayload {
- adminId: number;
+ userId: number;
  email: string;
 }
 

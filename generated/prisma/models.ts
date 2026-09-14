@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Admin.ts'
+export type * from './models/User.ts'
 export type * from './models/PasswordResetToken.ts'
 export type * from './models/SchoolProfile.ts'
 export type * from './models/Staff.ts'

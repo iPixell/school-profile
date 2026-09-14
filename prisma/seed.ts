@@ -9,11 +9,11 @@ if (!connectionString) {
  throw new Error("DATABASE_URL is not set");
 }
 
-const adminEmail = process.env.ADMIN_EMAIL;
-const adminPassword = process.env.ADMIN_PASSWORD;
+const userEmail = process.env.USER_EMAIL;
+const userPassword = process.env.USER_PASSWORD;
 
-if (!adminEmail || !adminPassword) {
- throw new Error("ADMIN_EMAIL or ADMIN_PASSWORD is not set");
+if (!userEmail || !userPassword) {
+ throw new Error("USER_EMAIL or USER_PASSWORD is not set");
 }
 
 const adapter = new PrismaPg({
@@ -27,7 +27,7 @@ const prisma = new PrismaClient({
 async function main(email: string, password: string) {
  const passwordHash = await bcrypt.hash(password, 12);
 
- await prisma.admin.upsert({
+ await prisma.user.upsert({
   where: {
    email,
   },
@@ -40,10 +40,10 @@ async function main(email: string, password: string) {
   },
  });
 
- console.log(`Admin seeded: ${email}`);
+ console.log(`User seeded: ${email}`);
 }
 
-main(adminEmail, adminPassword)
+main(userEmail, userPassword)
  .catch((error) => {
   console.error(error);
   process.exit(1);

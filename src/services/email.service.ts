@@ -19,7 +19,7 @@ export const sendPasswordResetEmail = async (
  const info = await transporter.sendMail({
   from: `"School Profile" <${testAccount.user}>`,
   to: email,
-  subject: "Reset Password Admin",
+  subject: "Reset Password User",
   text: `Gunakan link berikut untuk mengatur ulang password: ${resetUrl}`,
  });
 

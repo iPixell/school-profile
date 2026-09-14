@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt.js";
 
 export interface AuthRequest extends Request {
- admin?: {
-  adminId: number;
+ user?: {
+  userId: number;
   email: string;
  };
 }
@@ -34,8 +34,8 @@ export const authenticate = (
 
   const payload = verifyAccessToken(token);
 
-  req.admin = {
-   adminId: payload.adminId,
+  req.user = {
+   userId: payload.userId,
    email: payload.email,
   };
 
