@@ -21,11 +21,6 @@ export const login = async (req: Request, res: Response) => {
    });
   }
 
-  const accessToken = generateAccessToken({
-   adminId: admin.id,
-   email: admin.email,
-  });
-
   // Bandingkan password dari user dengan passwordHash di database
   const passwordMatch = await bcrypt.compare(password, admin.passwordHash);
 
@@ -35,6 +30,12 @@ export const login = async (req: Request, res: Response) => {
     message: "Email atau password salah",
    });
   }
+
+  // Kalau password benar, baru buat access token
+  const accessToken = generateAccessToken({
+   adminId: admin.id,
+   email: admin.email,
+  });
 
   // Login berhasil
   return res.status(200).json({
