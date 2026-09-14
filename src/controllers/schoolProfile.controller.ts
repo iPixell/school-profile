@@ -160,22 +160,32 @@ export const updateSchoolProfile = async (req: Request, res: Response) => {
 
 export const deleteSchoolProfile = async (req: Request, res: Response) => {
  try {
-  const existingProfile = await prisma.schoolProfile.findFirst();
+  const schoolProfile = await prisma.schoolProfile.findFirst();
 
-  if (!existingProfile) {
+  if (!schoolProfile) {
    return res.status(404).json({
-    message: "Data profil sekolah belum tersedia",
+    message: "Data profil sekolah tidak ditemukan",
    });
+  }
+
+  if (schoolProfile.bannerUrl) {
+   const bannerPath = getFilePathFromUrl(schoolProfile.bannerUrl);
+   await deleteImage(bannerPath);
+  }
+
+  if (schoolProfile.logoUrl) {
+   const logoPath = getFilePathFromUrl(schoolProfile.logoUrl);
+   await deleteImage(logoPath);
   }
 
   await prisma.schoolProfile.delete({
    where: {
-    id: existingProfile.id,
+    id: schoolProfile.id,
    },
   });
 
   return res.status(200).json({
-   message: "Profil sekolah berhasil dihapus",
+   message: "Data profil sekolah berhasil dihapus",
   });
  } catch (error) {
   console.error(error);

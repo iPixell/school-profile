@@ -143,46 +143,47 @@ export const updateAchievement = async (req: Request, res: Response) => {
  }
 };
 export const deleteAchievement = async (req: Request, res: Response) => {
-  try {
-    const achievementId = Number(req.params.id);
+ try {
+  const achievementId = Number(req.params.id);
 
-    if (Number.isNaN(achievementId)) {
-      return res.status(400).json({
-        message: "ID prestasi tidak valid",
-      });
-    }
-
-    const existingAchievement = await prisma.achievement.findUnique({
-      where: {
-        id: achievementId,
-      },
-    });
-
-    if (!existingAchievement) {
-      return res.status(404).json({
-        message: "Data prestasi tidak ditemukan",
-      });
-    }
-
-    if (existingAchievement.photoUrl) {
-      const filePath = getFilePathFromUrl(existingAchievement.photoUrl);
-      await deleteImage(filePath);
-    }
-
-    await prisma.achievement.delete({
-      where: {
-        id: achievementId,
-      },
-    });
-
-    return res.status(200).json({
-      message: "Data prestasi berhasil dihapus",
-    });
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Terjadi kesalahan pada server",
-    });
+  if (Number.isNaN(achievementId)) {
+   return res.status(400).json({
+    message: "ID prestasi tidak valid",
+   });
   }
+
+  const existingAchievement = await prisma.achievement.findUnique({
+   where: {
+    id: achievementId,
+   },
+  });
+
+  if (!existingAchievement) {
+   return res.status(404).json({
+    message: "Data prestasi tidak ditemukan",
+   });
+  }
+
+  if (existingAchievement.photoUrl) {
+   const filePath = getFilePathFromUrl(existingAchievement.photoUrl);
+   await deleteImage(filePath);
+  }
+
+  await prisma.achievement.delete({
+   where: {
+    id: achievementId,
+   },
+  });
+
+  return res.status(200).json({
+   message: "Data prestasi berhasil dihapus",
+  });
+ } catch (error) {
+  console.error(error);
+
+  return res.status(500).json({
+   message: "Terjadi kesalahan pada server",
+  });
+ }
 };
+//file:///data/user/0/com.foxdebug.acodefree/files/public/school-profile-express/src/controllers/achievement.controller.ts
