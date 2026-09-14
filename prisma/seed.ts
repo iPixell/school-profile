@@ -24,26 +24,26 @@ const prisma = new PrismaClient({
  adapter,
 });
 
-async function main() {
- const passwordHash = await bcrypt.hash(adminPassword, 12);
+async function main(email: string, password: string) {
+ const passwordHash = await bcrypt.hash(password, 12);
 
  await prisma.admin.upsert({
   where: {
-   email: adminEmail,
+   email,
   },
   update: {
    passwordHash,
   },
   create: {
-   email: adminEmail,
+   email,
    passwordHash,
   },
  });
 
- console.log(`Admin seeded: ${adminEmail}`);
+ console.log(`Admin seeded: ${email}`);
 }
 
-main()
+main(adminEmail, adminPassword)
  .catch((error) => {
   console.error(error);
   process.exit(1);
