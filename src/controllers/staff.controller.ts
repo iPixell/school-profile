@@ -1,167 +1,128 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import {
  uploadImage,
  deleteImage,
  getFilePathFromUrl,
 } from "../services/storage.service.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getStaff = async (_req: Request, res: Response) => {
- try {
-  const staff = await prisma.staff.findMany({
-   orderBy: {
-    createdAt: "desc",
-   },
-  });
+export const getStaff = catchAsync(async (_req, res) => {
+ const staff = await prisma.staff.findMany({
+  orderBy: {
+   createdAt: "desc",
+  },
+ });
 
-  return res.status(200).json({
-   message: "Data staff berhasil diambil",
-   data: staff,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data staff berhasil diambil",
+  data: staff,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createStaff = catchAsync(async (req, res) => {
+ const file = req.file;
+
+ let photoUrl: string | undefined;
+
+ if (file) {
+  photoUrl = await uploadImage(
+   file.buffer,
+   `staff/photo-${Date.now()}`,
+   file.mimetype,
+  );
  }
-};
 
-export const createStaff = async (req: Request, res: Response) => {
- try {
-  const file = req.file;
+ const staff = await prisma.staff.create({
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
 
-  let photoUrl: string | undefined;
+ res.status(201).json({
+  message: "Staff berhasil dibuat",
+  data: staff,
+ });
+});
 
-  if (file) {
-   photoUrl = await uploadImage(
-    file.buffer,
-    `staff/photo-${Date.now()}`,
-    file.mimetype,
-   );
-  }
+export const updateStaff = catchAsync(async (req, res) => {
+ const staffId = Number(req.params.id);
 
-  const staff = await prisma.staff.create({
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(201).json({
-   message: "Staff berhasil dibuat",
-   data: staff,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(staffId)) {
+  throw new AppError("ID staff tidak valid", 400);
  }
-};
 
-export const updateStaff = async (req: Request, res: Response) => {
- try {
-  const staffId = Number(req.params.id);
+ const existingStaff = await prisma.staff.findUnique({
+  where: {
+   id: staffId,
+  },
+ });
 
-  if (Number.isNaN(staffId)) {
-   return res.status(400).json({
-    message: "ID staff tidak valid",
-   });
-  }
-
-  const existingStaff = await prisma.staff.findUnique({
-   where: {
-    id: staffId,
-   },
-  });
-
-  if (!existingStaff) {
-   return res.status(404).json({
-    message: "Data staff tidak ditemukan",
-   });
-  }
-
-  let photoUrl = existingStaff.photoUrl;
-
-  if (req.file) {
-   photoUrl = await uploadImage(
-    req.file.buffer,
-    `staff/photo-${Date.now()}`,
-    req.file.mimetype,
-   );
-
-   if (existingStaff.photoUrl) {
-    const oldFilePath = getFilePathFromUrl(existingStaff.photoUrl);
-    await deleteImage(oldFilePath);
-   }
-  }
-
-  const staff = await prisma.staff.update({
-   where: {
-    id: staffId,
-   },
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data staff berhasil diperbarui",
-   data: staff,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingStaff) {
+  throw new AppError("Data staff tidak ditemukan", 404);
  }
-};
 
-export const deleteStaff = async (req: Request, res: Response) => {
- try {
-  const staffId = Number(req.params.id);
+ let photoUrl = existingStaff.photoUrl;
 
-  if (Number.isNaN(staffId)) {
-   return res.status(400).json({
-    message: "ID staff tidak valid",
-   });
-  }
-
-  const existingStaff = await prisma.staff.findUnique({
-   where: {
-    id: staffId,
-   },
-  });
-
-  if (!existingStaff) {
-   return res.status(404).json({
-    message: "Data staff tidak ditemukan",
-   });
-  }
+ if (req.file) {
+  photoUrl = await uploadImage(
+   req.file.buffer,
+   `staff/photo-${Date.now()}`,
+   req.file.mimetype,
+  );
 
   if (existingStaff.photoUrl) {
-   const filePath = getFilePathFromUrl(existingStaff.photoUrl);
-   await deleteImage(filePath);
+   const oldFilePath = getFilePathFromUrl(existingStaff.photoUrl);
+   await deleteImage(oldFilePath);
   }
-
-  await prisma.staff.delete({
-   where: {
-    id: staffId,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data staff berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
  }
-};
+
+ const staff = await prisma.staff.update({
+  where: {
+   id: staffId,
+  },
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data staff berhasil diperbarui",
+  data: staff,
+ });
+});
+
+export const deleteStaff = catchAsync(async (req, res) => {
+ const staffId = Number(req.params.id);
+
+ if (Number.isNaN(staffId)) {
+  throw new AppError("ID staff tidak valid", 400);
+ }
+
+ const existingStaff = await prisma.staff.findUnique({
+  where: {
+   id: staffId,
+  },
+ });
+
+ if (!existingStaff) {
+  throw new AppError("Data staff tidak ditemukan", 404);
+ }
+
+ if (existingStaff.photoUrl) {
+  const filePath = getFilePathFromUrl(existingStaff.photoUrl);
+  await deleteImage(filePath);
+ }
+
+ await prisma.staff.delete({
+  where: {
+   id: staffId,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data staff berhasil dihapus",
+ });
+});
