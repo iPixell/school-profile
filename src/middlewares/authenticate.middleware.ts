@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt.js";
+import { AppError } from "../utils/AppError.js";
 
 export interface AuthRequest extends Request {
  user?: {
@@ -10,28 +11,22 @@ export interface AuthRequest extends Request {
 
 export const authenticate = (
  req: AuthRequest,
- res: Response,
+ _res: Response,
  next: NextFunction,
 ): void => {
+ const authHeader = req.headers.authorization;
+
+ if (!authHeader) {
+  throw new AppError("Access token diperlukan", 401);
+ }
+
+ const [type, token] = authHeader.split(" ");
+
+ if (type !== "Bearer" || !token) {
+  throw new AppError("Format Authorization tidak valid", 401);
+ }
+
  try {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-   res.status(401).json({
-    message: "Access token diperlukan",
-   });
-   return;
-  }
-
-  const [type, token] = authHeader.split(" ");
-
-  if (type !== "Bearer" || !token) {
-   res.status(401).json({
-    message: "Format Authorization tidak valid",
-   });
-   return;
-  }
-
   const payload = verifyAccessToken(token);
 
   req.user = {
@@ -40,11 +35,7 @@ export const authenticate = (
   };
 
   next();
- } catch (error) {
-  console.error(error);
-
-  res.status(401).json({
-   message: "Access token tidak valid atau sudah kedaluwarsa",
-  });
+ } catch {
+  throw new AppError("Access token tidak valid atau sudah kedaluwarsa", 401);
  }
 };
