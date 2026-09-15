@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
+
 import { AppError } from "../utils/AppError.js";
 import { ValidationError } from "../utils/ValidationError.js";
+import { logger } from "../utils/logger.js";
 
 export const errorHandler = (
  error: unknown,
@@ -23,7 +25,14 @@ export const errorHandler = (
   });
  }
 
- console.error(error);
+ // unexpected error
+ logger.error(
+  {
+   event: "UNHANDLED_ERROR",
+   error,
+  },
+  "Terjadi kesalahan yang tidak tertangani",
+ );
 
  return res.status(500).json({
   success: false,
