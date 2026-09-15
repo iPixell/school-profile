@@ -74,8 +74,13 @@ export const forgotPassword = catchAsync(async (req, res) => {
   },
  });
 
- const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+ const frontendUrl = process.env.FRONTEND_URL;
 
+ if (!frontendUrl) {
+  throw new AppError("FRONTEND_URL belum dikonfigurasi", 500);
+ }
+
+ const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}`;
  await sendPasswordResetEmail(email, resetUrl);
 
  res.status(200).json({

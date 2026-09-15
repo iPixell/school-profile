@@ -21,7 +21,17 @@ const PORT = Number(process.env.PORT) || 3000;
 
 // Register Middleware
 app.use(express.json());
-app.use(cors());
+const frontendUrl = process.env.FRONTEND_URL;
+
+if (!frontendUrl) {
+ throw new Error("FRONTEND_URL belum dikonfigurasi");
+}
+
+app.use(
+ cors({
+  origin: frontendUrl,
+ }),
+);
 app.use(pinoHttp({ logger }));
 
 // Routes
