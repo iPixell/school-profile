@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "StaffType" ADD VALUE 'PRINCIPAL';
