@@ -1,114 +1,75 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getSpmb = async (_req: Request, res: Response) => {
- try {
-  const spmb = await prisma.spmb.findMany({
-   orderBy: { createdAt: "desc" },
-  });
+export const getSpmb = catchAsync(async (_req, res) => {
+ const spmb = await prisma.spmb.findMany({
+  orderBy: { createdAt: "desc" },
+ });
 
-  return res.status(200).json({
-   message: "Data SPMB berhasil diambil",
-   data: spmb,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data SPMB berhasil diambil",
+  data: spmb,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createSpmb = catchAsync(async (req, res) => {
+ const spmb = await prisma.spmb.create({
+  data: req.body,
+ });
+
+ res.status(201).json({
+  message: "Data SPMB berhasil dibuat",
+  data: spmb,
+ });
+});
+
+export const updateSpmb = catchAsync(async (req, res) => {
+ const spmbId = Number(req.params.id);
+
+ if (Number.isNaN(spmbId)) {
+  throw new AppError("ID SPMB tidak valid", 400);
  }
-};
 
-export const createSpmb = async (req: Request, res: Response) => {
- try {
-  const spmb = await prisma.spmb.create({
-   data: req.body,
-  });
+ const existingSpmb = await prisma.spmb.findUnique({
+  where: { id: spmbId },
+ });
 
-  return res.status(201).json({
-   message: "Data SPMB berhasil dibuat",
-   data: spmb,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingSpmb) {
+  throw new AppError("Data SPMB tidak ditemukan", 404);
  }
-};
 
-export const updateSpmb = async (req: Request, res: Response) => {
- try {
-  const spmbId = Number(req.params.id);
+ const spmb = await prisma.spmb.update({
+  where: { id: spmbId },
+  data: req.body,
+ });
 
-  if (Number.isNaN(spmbId)) {
-   return res.status(400).json({
-    message: "ID SPMB tidak valid",
-   });
-  }
+ res.status(200).json({
+  message: "Data SPMB berhasil diperbarui",
+  data: spmb,
+ });
+});
 
-  const existingSpmb = await prisma.spmb.findUnique({
-   where: { id: spmbId },
-  });
+export const deleteSpmb = catchAsync(async (req, res) => {
+ const spmbId = Number(req.params.id);
 
-  if (!existingSpmb) {
-   return res.status(404).json({
-    message: "Data SPMB tidak ditemukan",
-   });
-  }
-
-  const spmb = await prisma.spmb.update({
-   where: { id: spmbId },
-   data: req.body,
-  });
-
-  return res.status(200).json({
-   message: "Data SPMB berhasil diperbarui",
-   data: spmb,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(spmbId)) {
+  throw new AppError("ID SPMB tidak valid", 400);
  }
-};
 
-export const deleteSpmb = async (req: Request, res: Response) => {
- try {
-  const spmbId = Number(req.params.id);
+ const existingSpmb = await prisma.spmb.findUnique({
+  where: { id: spmbId },
+ });
 
-  if (Number.isNaN(spmbId)) {
-   return res.status(400).json({
-    message: "ID SPMB tidak valid",
-   });
-  }
-
-  const existingSpmb = await prisma.spmb.findUnique({
-   where: { id: spmbId },
-  });
-
-  if (!existingSpmb) {
-   return res.status(404).json({
-    message: "Data SPMB tidak ditemukan",
-   });
-  }
-
-  await prisma.spmb.delete({
-   where: { id: spmbId },
-  });
-
-  return res.status(200).json({
-   message: "Data SPMB berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingSpmb) {
+  throw new AppError("Data SPMB tidak ditemukan", 404);
  }
-};
+
+ await prisma.spmb.delete({
+  where: { id: spmbId },
+ });
+
+ res.status(200).json({
+  message: "Data SPMB berhasil dihapus",
+ });
+});

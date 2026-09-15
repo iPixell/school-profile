@@ -1,124 +1,85 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getContacts = async (_req: Request, res: Response) => {
- try {
-  const contacts = await prisma.contact.findMany({
-   orderBy: {
-    createdAt: "desc",
-   },
-  });
+export const getContacts = catchAsync(async (_req, res) => {
+ const contacts = await prisma.contact.findMany({
+  orderBy: {
+   createdAt: "desc",
+  },
+ });
 
-  return res.status(200).json({
-   message: "Data kontak berhasil diambil",
-   data: contacts,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data kontak berhasil diambil",
+  data: contacts,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createContact = catchAsync(async (req, res) => {
+ const contact = await prisma.contact.create({
+  data: req.body,
+ });
+
+ res.status(201).json({
+  message: "Data kontak berhasil dibuat",
+  data: contact,
+ });
+});
+
+export const updateContact = catchAsync(async (req, res) => {
+ const contactId = Number(req.params.id);
+
+ if (Number.isNaN(contactId)) {
+  throw new AppError("ID kontak tidak valid", 400);
  }
-};
 
-export const createContact = async (req: Request, res: Response) => {
- try {
-  const contact = await prisma.contact.create({
-   data: req.body,
-  });
+ const existingContact = await prisma.contact.findUnique({
+  where: {
+   id: contactId,
+  },
+ });
 
-  return res.status(201).json({
-   message: "Data kontak berhasil dibuat",
-   data: contact,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingContact) {
+  throw new AppError("Data kontak tidak ditemukan", 404);
  }
-};
 
-export const updateContact = async (req: Request, res: Response) => {
- try {
-  const contactId = Number(req.params.id);
+ const contact = await prisma.contact.update({
+  where: {
+   id: contactId,
+  },
+  data: req.body,
+ });
 
-  if (Number.isNaN(contactId)) {
-   return res.status(400).json({
-    message: "ID kontak tidak valid",
-   });
-  }
+ res.status(200).json({
+  message: "Data kontak berhasil diperbarui",
+  data: contact,
+ });
+});
 
-  const existingContact = await prisma.contact.findUnique({
-   where: {
-    id: contactId,
-   },
-  });
+export const deleteContact = catchAsync(async (req, res) => {
+ const contactId = Number(req.params.id);
 
-  if (!existingContact) {
-   return res.status(404).json({
-    message: "Data kontak tidak ditemukan",
-   });
-  }
-
-  const contact = await prisma.contact.update({
-   where: {
-    id: contactId,
-   },
-   data: req.body,
-  });
-
-  return res.status(200).json({
-   message: "Data kontak berhasil diperbarui",
-   data: contact,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(contactId)) {
+  throw new AppError("ID kontak tidak valid", 400);
  }
-};
 
-export const deleteContact = async (req: Request, res: Response) => {
- try {
-  const contactId = Number(req.params.id);
+ const existingContact = await prisma.contact.findUnique({
+  where: {
+   id: contactId,
+  },
+ });
 
-  if (Number.isNaN(contactId)) {
-   return res.status(400).json({
-    message: "ID kontak tidak valid",
-   });
-  }
-
-  const existingContact = await prisma.contact.findUnique({
-   where: {
-    id: contactId,
-   },
-  });
-
-  if (!existingContact) {
-   return res.status(404).json({
-    message: "Data kontak tidak ditemukan",
-   });
-  }
-
-  await prisma.contact.delete({
-   where: {
-    id: contactId,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data kontak berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingContact) {
+  throw new AppError("Data kontak tidak ditemukan", 404);
  }
-};
+
+ await prisma.contact.delete({
+  where: {
+   id: contactId,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data kontak berhasil dihapus",
+ });
+});

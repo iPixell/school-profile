@@ -1,167 +1,128 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import {
  uploadImage,
  deleteImage,
  getFilePathFromUrl,
 } from "../services/storage.service.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getFacilities = async (_req: Request, res: Response) => {
- try {
-  const facilities = await prisma.facility.findMany({
-   orderBy: { createdAt: "desc" },
-  });
+export const getFacilities = catchAsync(async (_req, res) => {
+ const facilities = await prisma.facility.findMany({
+  orderBy: { createdAt: "desc" },
+ });
 
-  return res.status(200).json({
-   message: "Data fasilitas berhasil diambil",
-   data: facilities,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data fasilitas berhasil diambil",
+  data: facilities,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createFacility = catchAsync(async (req, res) => {
+ const file = req.file;
+
+ let photoUrl: string | undefined;
+
+ if (file) {
+  photoUrl = await uploadImage(
+   file.buffer,
+   `facilities/photo-${Date.now()}`,
+   file.mimetype,
+  );
  }
-};
 
-export const createFacility = async (req: Request, res: Response) => {
- try {
-  const file = req.file;
+ const facility = await prisma.facility.create({
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
 
-  let photoUrl: string | undefined;
+ res.status(201).json({
+  message: "Data fasilitas berhasil dibuat",
+  data: facility,
+ });
+});
 
-  if (file) {
-   photoUrl = await uploadImage(
-    file.buffer,
-    `facilities/photo-${Date.now()}`,
-    file.mimetype,
-   );
-  }
+export const updateFacility = catchAsync(async (req, res) => {
+ const facilityId = Number(req.params.id);
 
-  const facility = await prisma.facility.create({
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(201).json({
-   message: "Data fasilitas berhasil dibuat",
-   data: facility,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(facilityId)) {
+  throw new AppError("ID fasilitas tidak valid", 400);
  }
-};
 
-export const updateFacility = async (req: Request, res: Response) => {
- try {
-  const facilityId = Number(req.params.id);
+ const existingFacility = await prisma.facility.findUnique({
+  where: {
+   id: facilityId,
+  },
+ });
 
-  if (Number.isNaN(facilityId)) {
-   return res.status(400).json({
-    message: "ID fasilitas tidak valid",
-   });
-  }
-
-  const existingFacility = await prisma.facility.findUnique({
-   where: {
-    id: facilityId,
-   },
-  });
-
-  if (!existingFacility) {
-   return res.status(404).json({
-    message: "Data fasilitas tidak ditemukan",
-   });
-  }
-
-  let photoUrl = existingFacility.photoUrl;
-
-  if (req.file) {
-   photoUrl = await uploadImage(
-    req.file.buffer,
-    `facilities/photo-${Date.now()}`,
-    req.file.mimetype,
-   );
-
-   if (existingFacility.photoUrl) {
-    const oldFilePath = getFilePathFromUrl(existingFacility.photoUrl);
-
-    await deleteImage(oldFilePath);
-   }
-  }
-
-  const facility = await prisma.facility.update({
-   where: {
-    id: facilityId,
-   },
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data fasilitas berhasil diperbarui",
-   data: facility,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingFacility) {
+  throw new AppError("Data fasilitas tidak ditemukan", 404);
  }
-};
 
-export const deleteFacility = async (req: Request, res: Response) => {
- try {
-  const facilityId = Number(req.params.id);
+ let photoUrl = existingFacility.photoUrl;
 
-  if (Number.isNaN(facilityId)) {
-   return res.status(400).json({
-    message: "ID fasilitas tidak valid",
-   });
-  }
-
-  const existingFacility = await prisma.facility.findUnique({
-   where: {
-    id: facilityId,
-   },
-  });
-
-  if (!existingFacility) {
-   return res.status(404).json({
-    message: "Data fasilitas tidak ditemukan",
-   });
-  }
+ if (req.file) {
+  photoUrl = await uploadImage(
+   req.file.buffer,
+   `facilities/photo-${Date.now()}`,
+   req.file.mimetype,
+  );
 
   if (existingFacility.photoUrl) {
-   const filePath = getFilePathFromUrl(existingFacility.photoUrl);
+   const oldFilePath = getFilePathFromUrl(existingFacility.photoUrl);
 
-   await deleteImage(filePath);
+   await deleteImage(oldFilePath);
   }
-
-  await prisma.facility.delete({
-   where: {
-    id: facilityId,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data fasilitas berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
  }
-};
+
+ const facility = await prisma.facility.update({
+  where: {
+   id: facilityId,
+  },
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data fasilitas berhasil diperbarui",
+  data: facility,
+ });
+});
+
+export const deleteFacility = catchAsync(async (req, res) => {
+ const facilityId = Number(req.params.id);
+
+ if (Number.isNaN(facilityId)) {
+  throw new AppError("ID fasilitas tidak valid", 400);
+ }
+
+ const existingFacility = await prisma.facility.findUnique({
+  where: {
+   id: facilityId,
+  },
+ });
+
+ if (!existingFacility) {
+  throw new AppError("Data fasilitas tidak ditemukan", 404);
+ }
+
+ if (existingFacility.photoUrl) {
+  const filePath = getFilePathFromUrl(existingFacility.photoUrl);
+
+  await deleteImage(filePath);
+ }
+
+ await prisma.facility.delete({
+  where: {
+   id: facilityId,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data fasilitas berhasil dihapus",
+ });
+});

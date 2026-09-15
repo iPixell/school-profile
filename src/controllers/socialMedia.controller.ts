@@ -1,114 +1,75 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getSocialMedias = async (_req: Request, res: Response) => {
- try {
-  const socialMedias = await prisma.socialMedia.findMany({
-   orderBy: { createdAt: "desc" },
-  });
+export const getSocialMedias = catchAsync(async (_req, res) => {
+ const socialMedias = await prisma.socialMedia.findMany({
+  orderBy: { createdAt: "desc" },
+ });
 
-  return res.status(200).json({
-   message: "Data media sosial berhasil diambil",
-   data: socialMedias,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data media sosial berhasil diambil",
+  data: socialMedias,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createSocialMedia = catchAsync(async (req, res) => {
+ const socialMedia = await prisma.socialMedia.create({
+  data: req.body,
+ });
+
+ res.status(201).json({
+  message: "Data media sosial berhasil dibuat",
+  data: socialMedia,
+ });
+});
+
+export const updateSocialMedia = catchAsync(async (req, res) => {
+ const socialMediaId = Number(req.params.id);
+
+ if (Number.isNaN(socialMediaId)) {
+  throw new AppError("ID media sosial tidak valid", 400);
  }
-};
 
-export const createSocialMedia = async (req: Request, res: Response) => {
- try {
-  const socialMedia = await prisma.socialMedia.create({
-   data: req.body,
-  });
+ const existingSocialMedia = await prisma.socialMedia.findUnique({
+  where: { id: socialMediaId },
+ });
 
-  return res.status(201).json({
-   message: "Data media sosial berhasil dibuat",
-   data: socialMedia,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingSocialMedia) {
+  throw new AppError("Data media sosial tidak ditemukan", 404);
  }
-};
 
-export const updateSocialMedia = async (req: Request, res: Response) => {
- try {
-  const socialMediaId = Number(req.params.id);
+ const socialMedia = await prisma.socialMedia.update({
+  where: { id: socialMediaId },
+  data: req.body,
+ });
 
-  if (Number.isNaN(socialMediaId)) {
-   return res.status(400).json({
-    message: "ID media sosial tidak valid",
-   });
-  }
+ res.status(200).json({
+  message: "Data media sosial berhasil diperbarui",
+  data: socialMedia,
+ });
+});
 
-  const existingSocialMedia = await prisma.socialMedia.findUnique({
-   where: { id: socialMediaId },
-  });
+export const deleteSocialMedia = catchAsync(async (req, res) => {
+ const socialMediaId = Number(req.params.id);
 
-  if (!existingSocialMedia) {
-   return res.status(404).json({
-    message: "Data media sosial tidak ditemukan",
-   });
-  }
-
-  const socialMedia = await prisma.socialMedia.update({
-   where: { id: socialMediaId },
-   data: req.body,
-  });
-
-  return res.status(200).json({
-   message: "Data media sosial berhasil diperbarui",
-   data: socialMedia,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(socialMediaId)) {
+  throw new AppError("ID media sosial tidak valid", 400);
  }
-};
 
-export const deleteSocialMedia = async (req: Request, res: Response) => {
- try {
-  const socialMediaId = Number(req.params.id);
+ const existingSocialMedia = await prisma.socialMedia.findUnique({
+  where: { id: socialMediaId },
+ });
 
-  if (Number.isNaN(socialMediaId)) {
-   return res.status(400).json({
-    message: "ID media sosial tidak valid",
-   });
-  }
-
-  const existingSocialMedia = await prisma.socialMedia.findUnique({
-   where: { id: socialMediaId },
-  });
-
-  if (!existingSocialMedia) {
-   return res.status(404).json({
-    message: "Data media sosial tidak ditemukan",
-   });
-  }
-
-  await prisma.socialMedia.delete({
-   where: { id: socialMediaId },
-  });
-
-  return res.status(200).json({
-   message: "Data media sosial berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingSocialMedia) {
+  throw new AppError("Data media sosial tidak ditemukan", 404);
  }
-};
+
+ await prisma.socialMedia.delete({
+  where: { id: socialMediaId },
+ });
+
+ res.status(200).json({
+  message: "Data media sosial berhasil dihapus",
+ });
+});

@@ -1,167 +1,128 @@
-import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import {
  uploadImage,
  deleteImage,
  getFilePathFromUrl,
 } from "../services/storage.service.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
 
-export const getExtracurriculars = async (_req: Request, res: Response) => {
- try {
-  const extracurriculars = await prisma.extracurricular.findMany({
-   orderBy: { createdAt: "desc" },
-  });
+export const getExtracurriculars = catchAsync(async (_req, res) => {
+ const extracurriculars = await prisma.extracurricular.findMany({
+  orderBy: { createdAt: "desc" },
+ });
 
-  return res.status(200).json({
-   message: "Data ekstrakurikuler berhasil diambil",
-   data: extracurriculars,
-  });
- } catch (error) {
-  console.error(error);
+ res.status(200).json({
+  message: "Data ekstrakurikuler berhasil diambil",
+  data: extracurriculars,
+ });
+});
 
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+export const createExtracurricular = catchAsync(async (req, res) => {
+ const file = req.file;
+
+ let photoUrl: string | undefined;
+
+ if (file) {
+  photoUrl = await uploadImage(
+   file.buffer,
+   `extracurriculars/photo-${Date.now()}`,
+   file.mimetype,
+  );
  }
-};
 
-export const createExtracurricular = async (req: Request, res: Response) => {
- try {
-  const file = req.file;
+ const extracurricular = await prisma.extracurricular.create({
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
 
-  let photoUrl: string | undefined;
+ res.status(201).json({
+  message: "Data ekstrakurikuler berhasil dibuat",
+  data: extracurricular,
+ });
+});
 
-  if (file) {
-   photoUrl = await uploadImage(
-    file.buffer,
-    `extracurriculars/photo-${Date.now()}`,
-    file.mimetype,
-   );
-  }
+export const updateExtracurricular = catchAsync(async (req, res) => {
+ const extracurricularId = Number(req.params.id);
 
-  const extracurricular = await prisma.extracurricular.create({
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(201).json({
-   message: "Data ekstrakurikuler berhasil dibuat",
-   data: extracurricular,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (Number.isNaN(extracurricularId)) {
+  throw new AppError("ID ekstrakurikuler tidak valid", 400);
  }
-};
 
-export const updateExtracurricular = async (req: Request, res: Response) => {
- try {
-  const extracurricularId = Number(req.params.id);
+ const existingExtracurricular = await prisma.extracurricular.findUnique({
+  where: {
+   id: extracurricularId,
+  },
+ });
 
-  if (Number.isNaN(extracurricularId)) {
-   return res.status(400).json({
-    message: "ID ekstrakurikuler tidak valid",
-   });
-  }
-
-  const existingExtracurricular = await prisma.extracurricular.findUnique({
-   where: {
-    id: extracurricularId,
-   },
-  });
-
-  if (!existingExtracurricular) {
-   return res.status(404).json({
-    message: "Data ekstrakurikuler tidak ditemukan",
-   });
-  }
-
-  let photoUrl = existingExtracurricular.photoUrl;
-
-  if (req.file) {
-   photoUrl = await uploadImage(
-    req.file.buffer,
-    `extracurriculars/photo-${Date.now()}`,
-    req.file.mimetype,
-   );
-
-   if (existingExtracurricular.photoUrl) {
-    const oldFilePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
-
-    await deleteImage(oldFilePath);
-   }
-  }
-
-  const extracurricular = await prisma.extracurricular.update({
-   where: {
-    id: extracurricularId,
-   },
-   data: {
-    ...req.body,
-    photoUrl,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data ekstrakurikuler berhasil diperbarui",
-   data: extracurricular,
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
+ if (!existingExtracurricular) {
+  throw new AppError("Data ekstrakurikuler tidak ditemukan", 404);
  }
-};
 
-export const deleteExtracurricular = async (req: Request, res: Response) => {
- try {
-  const extracurricularId = Number(req.params.id);
+ let photoUrl = existingExtracurricular.photoUrl;
 
-  if (Number.isNaN(extracurricularId)) {
-   return res.status(400).json({
-    message: "ID ekstrakurikuler tidak valid",
-   });
-  }
-
-  const existingExtracurricular = await prisma.extracurricular.findUnique({
-   where: {
-    id: extracurricularId,
-   },
-  });
-
-  if (!existingExtracurricular) {
-   return res.status(404).json({
-    message: "Data ekstrakurikuler tidak ditemukan",
-   });
-  }
+ if (req.file) {
+  photoUrl = await uploadImage(
+   req.file.buffer,
+   `extracurriculars/photo-${Date.now()}`,
+   req.file.mimetype,
+  );
 
   if (existingExtracurricular.photoUrl) {
-   const filePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
+   const oldFilePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
 
-   await deleteImage(filePath);
+   await deleteImage(oldFilePath);
   }
-
-  await prisma.extracurricular.delete({
-   where: {
-    id: extracurricularId,
-   },
-  });
-
-  return res.status(200).json({
-   message: "Data ekstrakurikuler berhasil dihapus",
-  });
- } catch (error) {
-  console.error(error);
-
-  return res.status(500).json({
-   message: "Terjadi kesalahan pada server",
-  });
  }
-};
+
+ const extracurricular = await prisma.extracurricular.update({
+  where: {
+   id: extracurricularId,
+  },
+  data: {
+   ...req.body,
+   photoUrl,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data ekstrakurikuler berhasil diperbarui",
+  data: extracurricular,
+ });
+});
+
+export const deleteExtracurricular = catchAsync(async (req, res) => {
+ const extracurricularId = Number(req.params.id);
+
+ if (Number.isNaN(extracurricularId)) {
+  throw new AppError("ID ekstrakurikuler tidak valid", 400);
+ }
+
+ const existingExtracurricular = await prisma.extracurricular.findUnique({
+  where: {
+   id: extracurricularId,
+  },
+ });
+
+ if (!existingExtracurricular) {
+  throw new AppError("Data ekstrakurikuler tidak ditemukan", 404);
+ }
+
+ if (existingExtracurricular.photoUrl) {
+  const filePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
+
+  await deleteImage(filePath);
+ }
+
+ await prisma.extracurricular.delete({
+  where: {
+   id: extracurricularId,
+  },
+ });
+
+ res.status(200).json({
+  message: "Data ekstrakurikuler berhasil dihapus",
+ });
+});

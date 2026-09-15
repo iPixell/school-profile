@@ -1,26 +1,17 @@
-import type { Request, Response, NextFunction } from "express";
-import { ZodError, type ZodObject } from "zod";
-import { ValidationError } from "../utils/ValidationError.js";
+import { z } from "zod";
 
-export const validate =
- (schema: ZodObject) =>
- (req: Request, _res: Response, next: NextFunction): void => {
-  try {
-   schema.parse(req.body);
-   next();
-  } catch (error) {
-   if (error instanceof ZodError) {
-    const errors: Record<string, unknown> = {};
+export const LoginSchema = z.object({
+ email: z.string().email("Format email tidak valid"),
 
-    for (const issue of error.issues) {
-     const key = String(issue.path[0] ?? "root");
-     errors[key] = issue.message;
-    }
+ password: z.string().min(1, "Password wajib diisi"),
+});
 
-    next(new ValidationError("Data tidak valid", errors));
-    return;
-   }
+export const ForgotPasswordSchema = z.object({
+ email: z.string().email("Format email tidak valid"),
+});
 
-   next(error);
-  }
- };
+export const ResetPasswordSchema = z.object({
+ token: z.string().min(1, "Token wajib diisi"),
+
+ newPassword: z.string().min(8, "Password minimal 8 karakter"),
+});
