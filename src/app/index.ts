@@ -59,6 +59,40 @@ app.get("/test-db", async (_req, res) => {
  }
 });
 
+// Handle invalid JSON
+app.use(
+ (
+  error: unknown,
+  _req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+ ): void => {
+  if (
+   error instanceof SyntaxError &&
+   "status" in error &&
+   error.status === 400 &&
+   "body" in error
+  ) {
+   logger.warn(
+    {
+     event: "JSON_PARSE_ERROR",
+     error: error.message,
+    },
+    "Menerima format JSON yang tidak valid",
+   );
+
+   res.status(400).json({
+    success: false,
+    message: "Format data JSON tidak valid.",
+   });
+
+   return;
+  }
+
+  next(error);
+ },
+);
+
 // Error Handler
 app.use(errorHandler);
 
