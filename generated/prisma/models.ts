@@ -11,6 +11,7 @@
 export type * from './models/User.ts'
 export type * from './models/PasswordResetToken.ts'
 export type * from './models/SchoolProfile.ts'
+export type * from './models/PrincipalHistory.ts'
 export type * from './models/Staff.ts'
 export type * from './models/Achievement.ts'
 export type * from './models/Extracurricular.ts'

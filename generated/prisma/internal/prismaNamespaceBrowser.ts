@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   SchoolProfile: 'SchoolProfile',
+  PrincipalHistory: 'PrincipalHistory',
   Staff: 'Staff',
   Achievement: 'Achievement',
   Extracurricular: 'Extracurricular',
@@ -117,6 +118,17 @@ export const SchoolProfileScalarFieldEnum = {
 } as const
 
 export type SchoolProfileScalarFieldEnum = (typeof SchoolProfileScalarFieldEnum)[keyof typeof SchoolProfileScalarFieldEnum]
+
+
+export const PrincipalHistoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  period: 'period',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrincipalHistoryScalarFieldEnum = (typeof PrincipalHistoryScalarFieldEnum)[keyof typeof PrincipalHistoryScalarFieldEnum]
 
 
 export const StaffScalarFieldEnum = {

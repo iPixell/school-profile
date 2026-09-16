@@ -33,6 +33,11 @@ export type PasswordResetToken = Prisma.PasswordResetTokenModel
  */
 export type SchoolProfile = Prisma.SchoolProfileModel
 /**
+ * Model PrincipalHistory
+ * 
+ */
+export type PrincipalHistory = Prisma.PrincipalHistoryModel
+/**
  * Model Staff
  * 
  */

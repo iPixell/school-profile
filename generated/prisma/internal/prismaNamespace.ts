@@ -400,6 +400,7 @@ export const ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   SchoolProfile: 'SchoolProfile',
+  PrincipalHistory: 'PrincipalHistory',
   Staff: 'Staff',
   Achievement: 'Achievement',
   Extracurricular: 'Extracurricular',
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordResetToken" | "schoolProfile" | "staff" | "achievement" | "extracurricular" | "facility" | "spmb" | "contact" | "socialMedia"
+    modelProps: "user" | "passwordResetToken" | "schoolProfile" | "principalHistory" | "staff" | "achievement" | "extracurricular" | "facility" | "spmb" | "contact" | "socialMedia"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -645,6 +646,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SchoolProfileCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SchoolProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    PrincipalHistory: {
+      payload: Prisma.$PrincipalHistoryPayload<ExtArgs>
+      fields: Prisma.PrincipalHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PrincipalHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PrincipalHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.PrincipalHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PrincipalHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.PrincipalHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.PrincipalHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.PrincipalHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PrincipalHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.PrincipalHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        update: {
+          args: Prisma.PrincipalHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.PrincipalHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PrincipalHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PrincipalHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.PrincipalHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrincipalHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.PrincipalHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePrincipalHistory>
+        }
+        groupBy: {
+          args: Prisma.PrincipalHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrincipalHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PrincipalHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrincipalHistoryCountAggregateOutputType> | number
         }
       }
     }
@@ -1245,6 +1320,17 @@ export const SchoolProfileScalarFieldEnum = {
 export type SchoolProfileScalarFieldEnum = (typeof SchoolProfileScalarFieldEnum)[keyof typeof SchoolProfileScalarFieldEnum]
 
 
+export const PrincipalHistoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  period: 'period',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrincipalHistoryScalarFieldEnum = (typeof PrincipalHistoryScalarFieldEnum)[keyof typeof PrincipalHistoryScalarFieldEnum]
+
+
 export const StaffScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1589,6 +1675,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
   schoolProfile?: Prisma.SchoolProfileOmit
+  principalHistory?: Prisma.PrincipalHistoryOmit
   staff?: Prisma.StaffOmit
   achievement?: Prisma.AchievementOmit
   extracurricular?: Prisma.ExtracurricularOmit

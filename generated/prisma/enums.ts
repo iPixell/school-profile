@@ -10,7 +10,6 @@
 */
 
 export const StaffType = {
-  PRINCIPAL: 'PRINCIPAL',
   TEACHER: 'TEACHER',
   ADMINISTRATIVE: 'ADMINISTRATIVE'
 } as const
