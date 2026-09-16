@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { logger } from "../utils/logger.js";
 
 export const sendPasswordResetEmail = async (
  email: string,
@@ -25,5 +26,11 @@ export const sendPasswordResetEmail = async (
 
  const previewUrl = nodemailer.getTestMessageUrl(info);
 
- console.log("Preview email:", previewUrl);
+ logger.info(
+  {
+   event: "PASSWORD_RESET_EMAIL_SENT",
+   previewUrl,
+  },
+  "Preview email berhasil dibuat",
+ );
 };
