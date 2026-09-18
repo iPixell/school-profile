@@ -10,6 +10,7 @@
  */
 export type * from './models/User.ts'
 export type * from './models/PasswordResetToken.ts'
+export type * from './models/RefreshSession.ts'
 export type * from './models/SchoolProfile.ts'
 export type * from './models/PrincipalHistory.ts'
 export type * from './models/Staff.ts'

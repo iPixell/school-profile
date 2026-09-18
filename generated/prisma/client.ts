@@ -52,6 +52,11 @@ export type User = Prisma.UserModel
  */
 export type PasswordResetToken = Prisma.PasswordResetTokenModel
 /**
+ * Model RefreshSession
+ * 
+ */
+export type RefreshSession = Prisma.RefreshSessionModel
+/**
  * Model SchoolProfile
  * 
  */
