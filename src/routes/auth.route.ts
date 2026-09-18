@@ -3,6 +3,8 @@ import {
  login,
  forgotPassword,
  resetPassword,
+ refreshAccessToken,
+ logout,
 } from "../controllers/auth.controller.js";
 import {
  LoginSchema,
@@ -28,3 +30,6 @@ router.post(
 
 router.post("/reset-password", validate(ResetPasswordSchema), resetPassword);
 export default router;
+
+router.post("/refresh", refreshAccessToken);
+router.post("/logout", logout);
