@@ -15,7 +15,10 @@ export const getSocialMedias = catchAsync(async (_req, res) => {
 
 export const createSocialMedia = catchAsync(async (req, res) => {
  const socialMedia = await prisma.socialMedia.create({
-  data: req.body,
+  data: {
+   platform: req.body.platform,
+   url: req.body.url,
+  },
  });
 
  res.status(201).json({
@@ -41,7 +44,10 @@ export const updateSocialMedia = catchAsync(async (req, res) => {
 
  const socialMedia = await prisma.socialMedia.update({
   where: { id: socialMediaId },
-  data: req.body,
+  data: {
+   platform: req.body.platform,
+   url: req.body.url,
+  },
  });
 
  res.status(200).json({

@@ -38,6 +38,7 @@ export type SpmbMinAggregateOutputType = {
   id: number | null
   title: string | null
   description: string | null
+  photoUrl: string | null
   portalUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -47,6 +48,7 @@ export type SpmbMaxAggregateOutputType = {
   id: number | null
   title: string | null
   description: string | null
+  photoUrl: string | null
   portalUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -56,6 +58,7 @@ export type SpmbCountAggregateOutputType = {
   id: number
   title: number
   description: number
+  photoUrl: number
   portalUrl: number
   createdAt: number
   updatedAt: number
@@ -75,6 +78,7 @@ export type SpmbMinAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  photoUrl?: true
   portalUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -84,6 +88,7 @@ export type SpmbMaxAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  photoUrl?: true
   portalUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type SpmbCountAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  photoUrl?: true
   portalUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -189,6 +195,7 @@ export type SpmbGroupByOutputType = {
   id: number
   title: string
   description: string | null
+  photoUrl: string | null
   portalUrl: string | null
   createdAt: Date
   updatedAt: Date
@@ -221,6 +228,7 @@ export type SpmbWhereInput = {
   id?: Prisma.IntFilter<"Spmb"> | number
   title?: Prisma.StringFilter<"Spmb"> | string
   description?: Prisma.StringNullableFilter<"Spmb"> | string | null
+  photoUrl?: Prisma.StringNullableFilter<"Spmb"> | string | null
   portalUrl?: Prisma.StringNullableFilter<"Spmb"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Spmb"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Spmb"> | Date | string
@@ -230,6 +238,7 @@ export type SpmbOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   portalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -242,6 +251,7 @@ export type SpmbWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SpmbWhereInput | Prisma.SpmbWhereInput[]
   title?: Prisma.StringFilter<"Spmb"> | string
   description?: Prisma.StringNullableFilter<"Spmb"> | string | null
+  photoUrl?: Prisma.StringNullableFilter<"Spmb"> | string | null
   portalUrl?: Prisma.StringNullableFilter<"Spmb"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Spmb"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Spmb"> | Date | string
@@ -251,6 +261,7 @@ export type SpmbOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   portalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -268,6 +279,7 @@ export type SpmbScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Spmb"> | number
   title?: Prisma.StringWithAggregatesFilter<"Spmb"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Spmb"> | string | null
+  photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Spmb"> | string | null
   portalUrl?: Prisma.StringNullableWithAggregatesFilter<"Spmb"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Spmb"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Spmb"> | Date | string
@@ -276,6 +288,7 @@ export type SpmbScalarWhereWithAggregatesInput = {
 export type SpmbCreateInput = {
   title: string
   description?: string | null
+  photoUrl?: string | null
   portalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -285,6 +298,7 @@ export type SpmbUncheckedCreateInput = {
   id?: number
   title: string
   description?: string | null
+  photoUrl?: string | null
   portalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -293,6 +307,7 @@ export type SpmbUncheckedCreateInput = {
 export type SpmbUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   portalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -302,6 +317,7 @@ export type SpmbUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   portalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -311,6 +327,7 @@ export type SpmbCreateManyInput = {
   id?: number
   title: string
   description?: string | null
+  photoUrl?: string | null
   portalUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -319,6 +336,7 @@ export type SpmbCreateManyInput = {
 export type SpmbUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   portalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -328,6 +346,7 @@ export type SpmbUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   portalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -337,6 +356,7 @@ export type SpmbCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
   portalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -350,6 +370,7 @@ export type SpmbMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
   portalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -359,6 +380,7 @@ export type SpmbMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
   portalUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -374,6 +396,7 @@ export type SpmbSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   title?: boolean
   description?: boolean
+  photoUrl?: boolean
   portalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -383,6 +406,7 @@ export type SpmbSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   title?: boolean
   description?: boolean
+  photoUrl?: boolean
   portalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -392,6 +416,7 @@ export type SpmbSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   title?: boolean
   description?: boolean
+  photoUrl?: boolean
   portalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -401,12 +426,13 @@ export type SpmbSelectScalar = {
   id?: boolean
   title?: boolean
   description?: boolean
+  photoUrl?: boolean
   portalUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SpmbOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "portalUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["spmb"]>
+export type SpmbOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "photoUrl" | "portalUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["spmb"]>
 
 export type $SpmbPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Spmb"
@@ -415,6 +441,7 @@ export type $SpmbPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: number
     title: string
     description: string | null
+    photoUrl: string | null
     portalUrl: string | null
     createdAt: Date
     updatedAt: Date
@@ -844,6 +871,7 @@ export interface SpmbFieldRefs {
   readonly id: Prisma.FieldRef<"Spmb", 'Int'>
   readonly title: Prisma.FieldRef<"Spmb", 'String'>
   readonly description: Prisma.FieldRef<"Spmb", 'String'>
+  readonly photoUrl: Prisma.FieldRef<"Spmb", 'String'>
   readonly portalUrl: Prisma.FieldRef<"Spmb", 'String'>
   readonly createdAt: Prisma.FieldRef<"Spmb", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Spmb", 'DateTime'>

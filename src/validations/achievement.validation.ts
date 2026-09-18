@@ -9,7 +9,6 @@ export const CreateAchievementSchema = z.object({
   .number()
   .int("Tahun harus berupa bilangan bulat")
   .min(1900, "Tahun tidak valid"),
- photoUrl: z.string().url("Format URL foto tidak valid").optional(),
 });
 
 export const UpdateAchievementSchema = CreateAchievementSchema.partial();

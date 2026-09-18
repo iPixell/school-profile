@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
  getExtracurriculars,
+ getExtracurricularById,
  createExtracurricular,
  updateExtracurricular,
  deleteExtracurricular,
@@ -16,7 +17,7 @@ import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.midd
 const router = Router();
 
 router.get("/", getExtracurriculars);
-
+router.get("/:id", getExtracurricularById);
 router.post(
  "/",
  authenticate,
@@ -24,7 +25,6 @@ router.post(
  validate(CreateExtracurricularSchema),
  createExtracurricular,
 );
-
 router.put(
  "/:id",
  authenticate,

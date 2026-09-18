@@ -404,6 +404,7 @@ export const ModelName = {
   Staff: 'Staff',
   Achievement: 'Achievement',
   Extracurricular: 'Extracurricular',
+  ExtracurricularMedia: 'ExtracurricularMedia',
   Facility: 'Facility',
   Spmb: 'Spmb',
   Contact: 'Contact',
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "passwordResetToken" | "schoolProfile" | "principalHistory" | "staff" | "achievement" | "extracurricular" | "facility" | "spmb" | "contact" | "socialMedia"
+    modelProps: "user" | "passwordResetToken" | "schoolProfile" | "principalHistory" | "staff" | "achievement" | "extracurricular" | "extracurricularMedia" | "facility" | "spmb" | "contact" | "socialMedia"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -945,6 +946,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ExtracurricularMedia: {
+      payload: Prisma.$ExtracurricularMediaPayload<ExtArgs>
+      fields: Prisma.ExtracurricularMediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExtracurricularMediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExtracurricularMediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        findFirst: {
+          args: Prisma.ExtracurricularMediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExtracurricularMediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        findMany: {
+          args: Prisma.ExtracurricularMediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>[]
+        }
+        create: {
+          args: Prisma.ExtracurricularMediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        createMany: {
+          args: Prisma.ExtracurricularMediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExtracurricularMediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>[]
+        }
+        delete: {
+          args: Prisma.ExtracurricularMediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        update: {
+          args: Prisma.ExtracurricularMediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExtracurricularMediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExtracurricularMediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExtracurricularMediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExtracurricularMediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtracurricularMediaPayload>
+        }
+        aggregate: {
+          args: Prisma.ExtracurricularMediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExtracurricularMedia>
+        }
+        groupBy: {
+          args: Prisma.ExtracurricularMediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtracurricularMediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExtracurricularMediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtracurricularMediaCountAggregateOutputType> | number
+        }
+      }
+    }
     Facility: {
       payload: Prisma.$FacilityPayload<ExtArgs>
       fields: Prisma.FacilityFieldRefs
@@ -1363,13 +1438,24 @@ export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[key
 export const ExtracurricularScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description',
   photoUrl: 'photoUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ExtracurricularScalarFieldEnum = (typeof ExtracurricularScalarFieldEnum)[keyof typeof ExtracurricularScalarFieldEnum]
+
+
+export const ExtracurricularMediaScalarFieldEnum = {
+  id: 'id',
+  extracurricularId: 'extracurricularId',
+  type: 'type',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtracurricularMediaScalarFieldEnum = (typeof ExtracurricularMediaScalarFieldEnum)[keyof typeof ExtracurricularMediaScalarFieldEnum]
 
 
 export const FacilityScalarFieldEnum = {
@@ -1388,6 +1474,7 @@ export const SpmbScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  photoUrl: 'photoUrl',
   portalUrl: 'portalUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1505,6 +1592,20 @@ export type EnumStaffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'StaffType[]'
  */
 export type ListEnumStaffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaType'
+ */
+export type EnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaType[]'
+ */
+export type ListEnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaType[]'>
     
 
 
@@ -1679,6 +1780,7 @@ export type GlobalOmitConfig = {
   staff?: Prisma.StaffOmit
   achievement?: Prisma.AchievementOmit
   extracurricular?: Prisma.ExtracurricularOmit
+  extracurricularMedia?: Prisma.ExtracurricularMediaOmit
   facility?: Prisma.FacilityOmit
   spmb?: Prisma.SpmbOmit
   contact?: Prisma.ContactOmit

@@ -35,7 +35,10 @@ export const createStaff = catchAsync(async (req, res) => {
 
  const staff = await prisma.staff.create({
   data: {
-   ...req.body,
+   name: req.body.name,
+   position: req.body.position,
+   type: req.body.type,
+   classTaught: req.body.classTaught,
    photoUrl,
   },
  });
@@ -83,7 +86,10 @@ export const updateStaff = catchAsync(async (req, res) => {
    id: staffId,
   },
   data: {
-   ...req.body,
+   name: req.body.name,
+   position: req.body.position,
+   type: req.body.type,
+   classTaught: req.body.classTaught,
    photoUrl,
   },
  });

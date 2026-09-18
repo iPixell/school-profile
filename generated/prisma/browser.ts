@@ -53,6 +53,11 @@ export type Achievement = Prisma.AchievementModel
  */
 export type Extracurricular = Prisma.ExtracurricularModel
 /**
+ * Model ExtracurricularMedia
+ * 
+ */
+export type ExtracurricularMedia = Prisma.ExtracurricularMediaModel
+/**
  * Model Facility
  * 
  */

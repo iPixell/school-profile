@@ -17,6 +17,11 @@ enum StaffType {
   ADMINISTRATIVE
 }
 
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
@@ -24,18 +29,33 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  resetTokens  PasswordResetToken[]
+  resetTokens     PasswordResetToken[]
+  refreshSessions RefreshSession[]
 }
 
 model PasswordResetToken {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    Int
-  tokenHash String   @unique
+  tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RefreshSession {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model SchoolProfile {
@@ -84,12 +104,24 @@ model Achievement {
 }
 
 model Extracurricular {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  photoUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  photoUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  media ExtracurricularMedia[]
+}
+
+model ExtracurricularMedia {
+  id                Int       @id @default(autoincrement())
+  extracurricularId Int
+  type              MediaType
+  url               String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  extracurricular Extracurricular @relation(fields: [extracurricularId], references: [id], onDelete: Cascade)
 }
 
 model Facility {
@@ -105,6 +137,7 @@ model Spmb {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
+  photoUrl    String?
   portalUrl   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

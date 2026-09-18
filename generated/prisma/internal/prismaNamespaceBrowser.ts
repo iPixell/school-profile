@@ -58,6 +58,7 @@ export const ModelName = {
   Staff: 'Staff',
   Achievement: 'Achievement',
   Extracurricular: 'Extracurricular',
+  ExtracurricularMedia: 'ExtracurricularMedia',
   Facility: 'Facility',
   Spmb: 'Spmb',
   Contact: 'Contact',
@@ -163,13 +164,24 @@ export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[key
 export const ExtracurricularScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description',
   photoUrl: 'photoUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ExtracurricularScalarFieldEnum = (typeof ExtracurricularScalarFieldEnum)[keyof typeof ExtracurricularScalarFieldEnum]
+
+
+export const ExtracurricularMediaScalarFieldEnum = {
+  id: 'id',
+  extracurricularId: 'extracurricularId',
+  type: 'type',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtracurricularMediaScalarFieldEnum = (typeof ExtracurricularMediaScalarFieldEnum)[keyof typeof ExtracurricularMediaScalarFieldEnum]
 
 
 export const FacilityScalarFieldEnum = {
@@ -188,6 +200,7 @@ export const SpmbScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  photoUrl: 'photoUrl',
   portalUrl: 'portalUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

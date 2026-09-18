@@ -53,7 +53,12 @@ export const createSchoolProfile = catchAsync(async (req, res) => {
 
  const schoolProfile = await prisma.schoolProfile.create({
   data: {
-   ...req.body,
+   schoolName: req.body.schoolName,
+   shortInfo: req.body.shortInfo,
+   about: req.body.about,
+   history: req.body.history,
+   vision: req.body.vision,
+   mission: req.body.mission,
    bannerUrl,
    logoUrl,
   },
@@ -117,7 +122,12 @@ export const updateSchoolProfile = catchAsync(async (req, res) => {
    id: existingProfile.id,
   },
   data: {
-   ...req.body,
+   schoolName: req.body.schoolName,
+   shortInfo: req.body.shortInfo,
+   about: req.body.about,
+   history: req.body.history,
+   vision: req.body.vision,
+   mission: req.body.mission,
    bannerUrl,
    logoUrl,
   },

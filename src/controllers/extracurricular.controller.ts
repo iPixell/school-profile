@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { prisma } from "../config/prisma.js";
 import {
  uploadImage,
@@ -9,12 +10,44 @@ import { AppError } from "../utils/AppError.js";
 
 export const getExtracurriculars = catchAsync(async (_req, res) => {
  const extracurriculars = await prisma.extracurricular.findMany({
-  orderBy: { createdAt: "desc" },
+  orderBy: {
+   createdAt: "desc",
+  },
  });
 
  res.status(200).json({
   message: "Data ekstrakurikuler berhasil diambil",
   data: extracurriculars,
+ });
+});
+
+export const getExtracurricularById = catchAsync(async (req, res) => {
+ const extracurricularId = Number(req.params.id);
+
+ if (Number.isNaN(extracurricularId)) {
+  throw new AppError("ID ekstrakurikuler tidak valid", 400);
+ }
+
+ const extracurricular = await prisma.extracurricular.findUnique({
+  where: {
+   id: extracurricularId,
+  },
+  include: {
+   media: {
+    orderBy: {
+     createdAt: "desc",
+    },
+   },
+  },
+ });
+
+ if (!extracurricular) {
+  throw new AppError("Data ekstrakurikuler tidak ditemukan", 404);
+ }
+
+ res.status(200).json({
+  message: "Detail ekstrakurikuler berhasil diambil",
+  data: extracurricular,
  });
 });
 
@@ -26,14 +59,14 @@ export const createExtracurricular = catchAsync(async (req, res) => {
  if (file) {
   photoUrl = await uploadImage(
    file.buffer,
-   `extracurriculars/photo-${Date.now()}`,
+   `extracurriculars/photo-${Date.now()}-${crypto.randomUUID()}`,
    file.mimetype,
   );
  }
 
  const extracurricular = await prisma.extracurricular.create({
   data: {
-   ...req.body,
+   name: req.body.name,
    photoUrl,
   },
  });
@@ -66,7 +99,7 @@ export const updateExtracurricular = catchAsync(async (req, res) => {
  if (req.file) {
   photoUrl = await uploadImage(
    req.file.buffer,
-   `extracurriculars/photo-${Date.now()}`,
+   `extracurriculars/photo-${Date.now()}-${crypto.randomUUID()}`,
    req.file.mimetype,
   );
 
@@ -82,7 +115,7 @@ export const updateExtracurricular = catchAsync(async (req, res) => {
    id: extracurricularId,
   },
   data: {
-   ...req.body,
+   name: req.body.name,
    photoUrl,
   },
  });
@@ -104,6 +137,9 @@ export const deleteExtracurricular = catchAsync(async (req, res) => {
   where: {
    id: extracurricularId,
   },
+  include: {
+   media: true,
+  },
  });
 
  if (!existingExtracurricular) {
@@ -112,6 +148,12 @@ export const deleteExtracurricular = catchAsync(async (req, res) => {
 
  if (existingExtracurricular.photoUrl) {
   const filePath = getFilePathFromUrl(existingExtracurricular.photoUrl);
+
+  await deleteImage(filePath);
+ }
+
+ for (const media of existingExtracurricular.media) {
+  const filePath = getFilePathFromUrl(media.url);
 
   await deleteImage(filePath);
  }

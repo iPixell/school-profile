@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt.js";
 import { AppError } from "../utils/AppError.js";
+import { prisma } from "../config/prisma.js";
 
 export interface AuthRequest extends Request {
  user?: {
@@ -9,11 +10,11 @@ export interface AuthRequest extends Request {
  };
 }
 
-export const authenticate = (
+export const authenticate = async (
  req: AuthRequest,
  _res: Response,
  next: NextFunction,
-): void => {
+): Promise<void> => {
  const authHeader = req.headers.authorization;
 
  if (!authHeader) {
@@ -29,13 +30,25 @@ export const authenticate = (
  try {
   const payload = verifyAccessToken(token);
 
+  const user = await prisma.user.findUnique({
+   where: { id: payload.userId },
+  });
+
+  if (!user) {
+   throw new AppError("User tidak ditemukan", 401);
+  }
+
   req.user = {
-   userId: payload.userId,
-   email: payload.email,
+   userId: user.id,
+   email: user.email,
   };
 
   next();
- } catch {
+ } catch (error) {
+  if (error instanceof AppError) {
+   throw error;
+  }
+
   throw new AppError("Access token tidak valid atau sudah kedaluwarsa", 401);
  }
 };

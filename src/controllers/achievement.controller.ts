@@ -49,7 +49,11 @@ export const createAchievement = catchAsync(async (req, res) => {
 
  const achievement = await prisma.achievement.create({
   data: {
-   ...req.body,
+   competition: req.body.competition,
+   studentName: req.body.studentName,
+   rank: req.body.rank,
+   level: req.body.level,
+   year: Number(req.body.year),
    photoUrl,
   },
  });
@@ -97,7 +101,14 @@ export const updateAchievement = catchAsync(async (req, res) => {
    id: achievementId,
   },
   data: {
-   ...req.body,
+   competition: req.body.competition,
+   studentName: req.body.studentName,
+   rank: req.body.rank,
+   level: req.body.level,
+   year:
+    req.body.year !== undefined
+     ? Number(req.body.year)
+     : existingAchievement.year,
    photoUrl,
   },
  });

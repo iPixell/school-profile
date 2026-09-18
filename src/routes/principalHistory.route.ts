@@ -5,8 +5,8 @@ import {
  updatePrincipalHistory,
  deletePrincipalHistory,
 } from "../controllers/principalHistory.controller.js";
-import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { authenticate } from "../middlewares/authenticate.middleware.js";
 import {
  CreatePrincipalHistorySchema,
  UpdatePrincipalHistorySchema,

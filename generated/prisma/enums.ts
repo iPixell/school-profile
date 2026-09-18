@@ -15,3 +15,11 @@ export const StaffType = {
 } as const
 
 export type StaffType = (typeof StaffType)[keyof typeof StaffType]
+
+
+export const MediaType = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO'
+} as const
+
+export type MediaType = (typeof MediaType)[keyof typeof MediaType]

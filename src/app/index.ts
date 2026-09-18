@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import helmet from "helmet";
 
 import { logger } from "../utils/logger.js";
 import { errorHandler } from "../middlewares/error.middleware.js";
@@ -12,6 +13,7 @@ import staffRoute from "../routes/staff.route.js";
 import principalHistoryRoute from "../routes/principalHistory.route.js";
 import achievementRoute from "../routes/achievement.route.js";
 import extracurricularRoute from "../routes/extracurricular.route.js";
+import extracurricularMediaRoute from "../routes/extracurricularMedia.route.js";
 import facilityRoute from "../routes/facility.route.js";
 import spmbRoute from "../routes/spmb.route.js";
 import contactRoute from "../routes/contact.route.js";
@@ -33,6 +35,7 @@ app.use(
   origin: frontendUrl,
  }),
 );
+app.use(helmet());
 app.use(pinoHttp({ logger }));
 
 // Routes
@@ -42,6 +45,7 @@ app.use("/api/staff", staffRoute);
 app.use("/api/principal-histories", principalHistoryRoute);
 app.use("/api/achievements", achievementRoute);
 app.use("/api/extracurriculars", extracurricularRoute);
+app.use("/api/extracurriculars", extracurricularMediaRoute);
 app.use("/api/facilities", facilityRoute);
 app.use("/api/spmb", spmbRoute);
 app.use("/api/contacts", contactRoute);

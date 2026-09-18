@@ -33,7 +33,8 @@ export const createFacility = catchAsync(async (req, res) => {
 
  const facility = await prisma.facility.create({
   data: {
-   ...req.body,
+   name: req.body.name,
+   description: req.body.description,
    photoUrl,
   },
  });
@@ -82,7 +83,8 @@ export const updateFacility = catchAsync(async (req, res) => {
    id: facilityId,
   },
   data: {
-   ...req.body,
+   name: req.body.name,
+   description: req.body.description,
    photoUrl,
   },
  });

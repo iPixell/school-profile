@@ -17,7 +17,14 @@ export const getContacts = catchAsync(async (_req, res) => {
 
 export const createContact = catchAsync(async (req, res) => {
  const contact = await prisma.contact.create({
-  data: req.body,
+  data: {
+   address: req.body.address,
+   phone: req.body.phone,
+   email: req.body.email,
+   whatsapp: req.body.whatsapp,
+   location: req.body.location,
+   googleMaps: req.body.googleMaps,
+  },
  });
 
  res.status(201).json({
@@ -47,7 +54,14 @@ export const updateContact = catchAsync(async (req, res) => {
   where: {
    id: contactId,
   },
-  data: req.body,
+  data: {
+  address: req.body.address,
+  phone: req.body.phone,
+  email: req.body.email,
+  whatsapp: req.body.whatsapp,
+  location: req.body.location,
+  googleMaps: req.body.googleMaps,
+},
  });
 
  res.status(200).json({

@@ -51,7 +51,10 @@ export const updatePrincipalHistory = catchAsync(
 
   const data = await prisma.principalHistory.update({
    where: { id },
-   data: req.body,
+   data: {
+    name: req.body.name,
+    period: req.body.period,
+   },
   });
 
   res.status(200).json({

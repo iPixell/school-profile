@@ -37,7 +37,6 @@ export type ExtracurricularSumAggregateOutputType = {
 export type ExtracurricularMinAggregateOutputType = {
   id: number | null
   name: string | null
-  description: string | null
   photoUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -46,7 +45,6 @@ export type ExtracurricularMinAggregateOutputType = {
 export type ExtracurricularMaxAggregateOutputType = {
   id: number | null
   name: string | null
-  description: string | null
   photoUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,7 +53,6 @@ export type ExtracurricularMaxAggregateOutputType = {
 export type ExtracurricularCountAggregateOutputType = {
   id: number
   name: number
-  description: number
   photoUrl: number
   createdAt: number
   updatedAt: number
@@ -74,7 +71,6 @@ export type ExtracurricularSumAggregateInputType = {
 export type ExtracurricularMinAggregateInputType = {
   id?: true
   name?: true
-  description?: true
   photoUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -83,7 +79,6 @@ export type ExtracurricularMinAggregateInputType = {
 export type ExtracurricularMaxAggregateInputType = {
   id?: true
   name?: true
-  description?: true
   photoUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -92,7 +87,6 @@ export type ExtracurricularMaxAggregateInputType = {
 export type ExtracurricularCountAggregateInputType = {
   id?: true
   name?: true
-  description?: true
   photoUrl?: true
   createdAt?: true
   updatedAt?: true
@@ -188,7 +182,6 @@ export type ExtracurricularGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type ExtracurricularGroupByOutputType = {
   id: number
   name: string
-  description: string | null
   photoUrl: string | null
   createdAt: Date
   updatedAt: Date
@@ -220,19 +213,19 @@ export type ExtracurricularWhereInput = {
   NOT?: Prisma.ExtracurricularWhereInput | Prisma.ExtracurricularWhereInput[]
   id?: Prisma.IntFilter<"Extracurricular"> | number
   name?: Prisma.StringFilter<"Extracurricular"> | string
-  description?: Prisma.StringNullableFilter<"Extracurricular"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Extracurricular"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Extracurricular"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Extracurricular"> | Date | string
+  media?: Prisma.ExtracurricularMediaListRelationFilter
 }
 
 export type ExtracurricularOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  media?: Prisma.ExtracurricularMediaOrderByRelationAggregateInput
 }
 
 export type ExtracurricularWhereUniqueInput = Prisma.AtLeast<{
@@ -241,16 +234,15 @@ export type ExtracurricularWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ExtracurricularWhereInput[]
   NOT?: Prisma.ExtracurricularWhereInput | Prisma.ExtracurricularWhereInput[]
   name?: Prisma.StringFilter<"Extracurricular"> | string
-  description?: Prisma.StringNullableFilter<"Extracurricular"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Extracurricular"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Extracurricular"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Extracurricular"> | Date | string
+  media?: Prisma.ExtracurricularMediaListRelationFilter
 }, "id">
 
 export type ExtracurricularOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -267,7 +259,6 @@ export type ExtracurricularScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ExtracurricularScalarWhereWithAggregatesInput | Prisma.ExtracurricularScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Extracurricular"> | number
   name?: Prisma.StringWithAggregatesFilter<"Extracurricular"> | string
-  description?: Prisma.StringNullableWithAggregatesFilter<"Extracurricular"> | string | null
   photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Extracurricular"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Extracurricular"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Extracurricular"> | Date | string
@@ -275,42 +266,41 @@ export type ExtracurricularScalarWhereWithAggregatesInput = {
 
 export type ExtracurricularCreateInput = {
   name: string
-  description?: string | null
   photoUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  media?: Prisma.ExtracurricularMediaCreateNestedManyWithoutExtracurricularInput
 }
 
 export type ExtracurricularUncheckedCreateInput = {
   id?: number
   name: string
-  description?: string | null
   photoUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  media?: Prisma.ExtracurricularMediaUncheckedCreateNestedManyWithoutExtracurricularInput
 }
 
 export type ExtracurricularUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.ExtracurricularMediaUpdateManyWithoutExtracurricularNestedInput
 }
 
 export type ExtracurricularUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.ExtracurricularMediaUncheckedUpdateManyWithoutExtracurricularNestedInput
 }
 
 export type ExtracurricularCreateManyInput = {
   id?: number
   name: string
-  description?: string | null
   photoUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -318,7 +308,6 @@ export type ExtracurricularCreateManyInput = {
 
 export type ExtracurricularUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -327,7 +316,6 @@ export type ExtracurricularUpdateManyMutationInput = {
 export type ExtracurricularUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -336,7 +324,6 @@ export type ExtracurricularUncheckedUpdateManyInput = {
 export type ExtracurricularCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -349,7 +336,6 @@ export type ExtracurricularAvgOrderByAggregateInput = {
 export type ExtracurricularMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -358,7 +344,6 @@ export type ExtracurricularMaxOrderByAggregateInput = {
 export type ExtracurricularMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -368,21 +353,115 @@ export type ExtracurricularSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type ExtracurricularScalarRelationFilter = {
+  is?: Prisma.ExtracurricularWhereInput
+  isNot?: Prisma.ExtracurricularWhereInput
+}
+
+export type ExtracurricularCreateNestedOneWithoutMediaInput = {
+  create?: Prisma.XOR<Prisma.ExtracurricularCreateWithoutMediaInput, Prisma.ExtracurricularUncheckedCreateWithoutMediaInput>
+  connectOrCreate?: Prisma.ExtracurricularCreateOrConnectWithoutMediaInput
+  connect?: Prisma.ExtracurricularWhereUniqueInput
+}
+
+export type ExtracurricularUpdateOneRequiredWithoutMediaNestedInput = {
+  create?: Prisma.XOR<Prisma.ExtracurricularCreateWithoutMediaInput, Prisma.ExtracurricularUncheckedCreateWithoutMediaInput>
+  connectOrCreate?: Prisma.ExtracurricularCreateOrConnectWithoutMediaInput
+  upsert?: Prisma.ExtracurricularUpsertWithoutMediaInput
+  connect?: Prisma.ExtracurricularWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExtracurricularUpdateToOneWithWhereWithoutMediaInput, Prisma.ExtracurricularUpdateWithoutMediaInput>, Prisma.ExtracurricularUncheckedUpdateWithoutMediaInput>
+}
+
+export type ExtracurricularCreateWithoutMediaInput = {
+  name: string
+  photoUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ExtracurricularUncheckedCreateWithoutMediaInput = {
+  id?: number
+  name: string
+  photoUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ExtracurricularCreateOrConnectWithoutMediaInput = {
+  where: Prisma.ExtracurricularWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExtracurricularCreateWithoutMediaInput, Prisma.ExtracurricularUncheckedCreateWithoutMediaInput>
+}
+
+export type ExtracurricularUpsertWithoutMediaInput = {
+  update: Prisma.XOR<Prisma.ExtracurricularUpdateWithoutMediaInput, Prisma.ExtracurricularUncheckedUpdateWithoutMediaInput>
+  create: Prisma.XOR<Prisma.ExtracurricularCreateWithoutMediaInput, Prisma.ExtracurricularUncheckedCreateWithoutMediaInput>
+  where?: Prisma.ExtracurricularWhereInput
+}
+
+export type ExtracurricularUpdateToOneWithWhereWithoutMediaInput = {
+  where?: Prisma.ExtracurricularWhereInput
+  data: Prisma.XOR<Prisma.ExtracurricularUpdateWithoutMediaInput, Prisma.ExtracurricularUncheckedUpdateWithoutMediaInput>
+}
+
+export type ExtracurricularUpdateWithoutMediaInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ExtracurricularUncheckedUpdateWithoutMediaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ExtracurricularCountOutputType
+ */
+
+export type ExtracurricularCountOutputType = {
+  media: number
+}
+
+export type ExtracurricularCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  media?: boolean | ExtracurricularCountOutputTypeCountMediaArgs
+}
+
+/**
+ * ExtracurricularCountOutputType without action
+ */
+export type ExtracurricularCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExtracurricularCountOutputType
+   */
+  select?: Prisma.ExtracurricularCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ExtracurricularCountOutputType without action
+ */
+export type ExtracurricularCountOutputTypeCountMediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExtracurricularMediaWhereInput
+}
 
 
 export type ExtracurricularSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  description?: boolean
   photoUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  media?: boolean | Prisma.Extracurricular$mediaArgs<ExtArgs>
+  _count?: boolean | Prisma.ExtracurricularCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["extracurricular"]>
 
 export type ExtracurricularSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  description?: boolean
   photoUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -391,7 +470,6 @@ export type ExtracurricularSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type ExtracurricularSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  description?: boolean
   photoUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -400,21 +478,27 @@ export type ExtracurricularSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type ExtracurricularSelectScalar = {
   id?: boolean
   name?: boolean
-  description?: boolean
   photoUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ExtracurricularOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "photoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["extracurricular"]>
+export type ExtracurricularOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "photoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["extracurricular"]>
+export type ExtracurricularInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  media?: boolean | Prisma.Extracurricular$mediaArgs<ExtArgs>
+  _count?: boolean | Prisma.ExtracurricularCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type ExtracurricularIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ExtracurricularIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $ExtracurricularPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Extracurricular"
-  objects: {}
+  objects: {
+    media: Prisma.$ExtracurricularMediaPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
-    description: string | null
     photoUrl: string | null
     createdAt: Date
     updatedAt: Date
@@ -812,6 +896,7 @@ readonly fields: ExtracurricularFieldRefs;
  */
 export interface Prisma__ExtracurricularClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  media<T extends Prisma.Extracurricular$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Extracurricular$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtracurricularMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -843,7 +928,6 @@ export interface Prisma__ExtracurricularClient<T, Null = never, ExtArgs extends 
 export interface ExtracurricularFieldRefs {
   readonly id: Prisma.FieldRef<"Extracurricular", 'Int'>
   readonly name: Prisma.FieldRef<"Extracurricular", 'String'>
-  readonly description: Prisma.FieldRef<"Extracurricular", 'String'>
   readonly photoUrl: Prisma.FieldRef<"Extracurricular", 'String'>
   readonly createdAt: Prisma.FieldRef<"Extracurricular", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Extracurricular", 'DateTime'>
@@ -864,6 +948,10 @@ export type ExtracurricularFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * Filter, which Extracurricular to fetch.
    */
   where: Prisma.ExtracurricularWhereUniqueInput
@@ -882,6 +970,10 @@ export type ExtracurricularFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * Filter, which Extracurricular to fetch.
    */
   where: Prisma.ExtracurricularWhereUniqueInput
@@ -899,6 +991,10 @@ export type ExtracurricularFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the Extracurricular
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
   /**
    * Filter, which Extracurricular to fetch.
    */
@@ -948,6 +1044,10 @@ export type ExtracurricularFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * Filter, which Extracurricular to fetch.
    */
   where?: Prisma.ExtracurricularWhereInput
@@ -995,6 +1095,10 @@ export type ExtracurricularFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the Extracurricular
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
   /**
    * Filter, which Extracurriculars to fetch.
    */
@@ -1044,6 +1148,10 @@ export type ExtracurricularCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * The data needed to create a Extracurricular.
    */
   data: Prisma.XOR<Prisma.ExtracurricularCreateInput, Prisma.ExtracurricularUncheckedCreateInput>
@@ -1091,6 +1199,10 @@ export type ExtracurricularUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the Extracurricular
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
   /**
    * The data needed to update a Extracurricular.
    */
@@ -1158,6 +1270,10 @@ export type ExtracurricularUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * The filter to search for the Extracurricular to update in case it exists.
    */
   where: Prisma.ExtracurricularWhereUniqueInput
@@ -1184,6 +1300,10 @@ export type ExtracurricularDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
+  /**
    * Filter which Extracurricular to delete.
    */
   where: Prisma.ExtracurricularWhereUniqueInput
@@ -1204,6 +1324,30 @@ export type ExtracurricularDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * Extracurricular.media
+ */
+export type Extracurricular$mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExtracurricularMedia
+   */
+  select?: Prisma.ExtracurricularMediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExtracurricularMedia
+   */
+  omit?: Prisma.ExtracurricularMediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularMediaInclude<ExtArgs> | null
+  where?: Prisma.ExtracurricularMediaWhereInput
+  orderBy?: Prisma.ExtracurricularMediaOrderByWithRelationInput | Prisma.ExtracurricularMediaOrderByWithRelationInput[]
+  cursor?: Prisma.ExtracurricularMediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExtracurricularMediaScalarFieldEnum | Prisma.ExtracurricularMediaScalarFieldEnum[]
+}
+
+/**
  * Extracurricular without action
  */
 export type ExtracurricularDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1215,4 +1359,8 @@ export type ExtracurricularDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the Extracurricular
    */
   omit?: Prisma.ExtracurricularOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtracurricularInclude<ExtArgs> | null
 }

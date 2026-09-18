@@ -11,14 +11,27 @@ import {
  CreateSpmbSchema,
  UpdateSpmbSchema,
 } from "../validations/spmb.validation.js";
+import { uploadImage as uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
 router.get("/", getSpmb);
 
-router.post("/", authenticate, validate(CreateSpmbSchema), createSpmb);
+router.post(
+ "/",
+ authenticate,
+ uploadImageMiddleware.single("photo"),
+ validate(CreateSpmbSchema),
+ createSpmb,
+);
 
-router.put("/:id", authenticate, validate(UpdateSpmbSchema), updateSpmb);
+router.put(
+ "/:id",
+ authenticate,
+ uploadImageMiddleware.single("photo"),
+ validate(UpdateSpmbSchema),
+ updateSpmb,
+);
 
 router.delete("/:id", authenticate, deleteSpmb);
 

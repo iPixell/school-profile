@@ -1,6 +1,12 @@
 import { prisma } from "../config/prisma.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
+import crypto from "crypto";
+import {
+ uploadImage,
+ deleteImage,
+ getFilePathFromUrl,
+} from "../services/storage.service.js";
 
 export const getSpmb = catchAsync(async (_req, res) => {
  const spmb = await prisma.spmb.findMany({
@@ -14,8 +20,25 @@ export const getSpmb = catchAsync(async (_req, res) => {
 });
 
 export const createSpmb = catchAsync(async (req, res) => {
+ const file = req.file;
+
+ let photoUrl: string | undefined;
+
+ if (file) {
+  photoUrl = await uploadImage(
+   file.buffer,
+   `spmb/photo-${Date.now()}-${crypto.randomUUID()}`,
+   file.mimetype,
+  );
+ }
+
  const spmb = await prisma.spmb.create({
-  data: req.body,
+  data: {
+   title: req.body.title,
+   description: req.body.description,
+   photoUrl,
+   portalUrl: req.body.portalUrl,
+  },
  });
 
  res.status(201).json({
@@ -39,9 +62,29 @@ export const updateSpmb = catchAsync(async (req, res) => {
   throw new AppError("Data SPMB tidak ditemukan", 404);
  }
 
+ let photoUrl = existingSpmb.photoUrl;
+
+ if (req.file) {
+  photoUrl = await uploadImage(
+   req.file.buffer,
+   `spmb/photo-${Date.now()}-${crypto.randomUUID()}`,
+   req.file.mimetype,
+  );
+
+  if (existingSpmb.photoUrl) {
+   const oldFilePath = getFilePathFromUrl(existingSpmb.photoUrl);
+   await deleteImage(oldFilePath);
+  }
+ }
+
  const spmb = await prisma.spmb.update({
   where: { id: spmbId },
-  data: req.body,
+  data: {
+   title: req.body.title,
+   description: req.body.description,
+   photoUrl,
+   portalUrl: req.body.portalUrl,
+  },
  });
 
  res.status(200).json({
@@ -63,6 +106,11 @@ export const deleteSpmb = catchAsync(async (req, res) => {
 
  if (!existingSpmb) {
   throw new AppError("Data SPMB tidak ditemukan", 404);
+ }
+
+ if (existingSpmb.photoUrl) {
+  const filePath = getFilePathFromUrl(existingSpmb.photoUrl);
+  await deleteImage(filePath);
  }
 
  await prisma.spmb.delete({

@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import multer from "multer";
 
 import { AppError } from "../utils/AppError.js";
 import { ValidationError } from "../utils/ValidationError.js";
@@ -25,7 +26,31 @@ export const errorHandler = (
   });
  }
 
- // unexpected error
+ if (error instanceof multer.MulterError) {
+  if (error.code === "LIMIT_FILE_SIZE") {
+   return res.status(400).json({
+    success: false,
+    message: "Ukuran file melebihi batas yang diizinkan",
+   });
+  }
+
+  return res.status(400).json({
+   success: false,
+   message: "File upload tidak valid",
+  });
+ }
+
+ if (
+  error instanceof Error &&
+  (error.message === "File harus berupa gambar" ||
+   error.message === "File harus berupa gambar atau video")
+ ) {
+  return res.status(400).json({
+   success: false,
+   message: error.message,
+  });
+ }
+
  logger.error(
   {
    event: "UNHANDLED_ERROR",
