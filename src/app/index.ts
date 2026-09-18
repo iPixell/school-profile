@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 
 import { logger } from "../utils/logger.js";
 import { errorHandler } from "../middlewares/error.middleware.js";
@@ -29,10 +30,11 @@ const frontendUrl = process.env.FRONTEND_URL;
 if (!frontendUrl) {
  throw new Error("FRONTEND_URL belum dikonfigurasi");
 }
-
+app.use(cookieParser());
 app.use(
  cors({
   origin: frontendUrl,
+  credentials: true,
  }),
 );
 app.use(helmet());
