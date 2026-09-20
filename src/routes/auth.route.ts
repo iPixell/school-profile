@@ -29,7 +29,9 @@ router.post(
 );
 
 router.post("/reset-password", validate(ResetPasswordSchema), resetPassword);
-export default router;
 
 router.post("/refresh", refreshAccessToken);
+
 router.post("/logout", logout);
+
+export default router;

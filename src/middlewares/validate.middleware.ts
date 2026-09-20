@@ -5,6 +5,8 @@ import { ValidationError } from "../utils/ValidationError.js";
 export const validate =
  (schema: ZodObject) =>
  (req: Request, _res: Response, next: NextFunction): void => {
+  //console.log("BODY YANG DITERIMA:", req.body);
+
   try {
    req.body = schema.parse(req.body);
    next();

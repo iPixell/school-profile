@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { generateAccessToken } from "../utils/jwt.js";
@@ -123,6 +123,7 @@ export const refreshAccessToken = catchAsync(async (req, res) => {
     revokedAt: new Date(),
    },
   }),
+
   prisma.refreshSession.create({
    data: {
     userId: session.user.id,
@@ -182,6 +183,7 @@ export const forgotPassword = catchAsync(async (req, res) => {
  }
 
  const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}`;
+
  await sendPasswordResetEmail(email, resetUrl);
 
  res.status(200).json({
@@ -215,12 +217,18 @@ export const resetPassword = catchAsync(async (req, res) => {
  await prisma.$transaction([
   prisma.user.update({
    where: { id: resetToken.userId },
-   data: { passwordHash },
+   data: {
+    passwordHash,
+   },
   }),
+
   prisma.passwordResetToken.update({
    where: { id: resetToken.id },
-   data: { usedAt: new Date() },
+   data: {
+    usedAt: new Date(),
+   },
   }),
+
   prisma.refreshSession.updateMany({
    where: {
     userId: resetToken.userId,
