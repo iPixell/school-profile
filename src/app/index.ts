@@ -1,9 +1,11 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 
+import { openapi } from "../docs/openapi.js";
 import { logger } from "../utils/logger.js";
 import { errorHandler } from "../middlewares/error.middleware.js";
 import { prisma } from "../config/prisma.js";
@@ -21,6 +23,7 @@ import contactRoute from "../routes/contact.route.js";
 import socialMediaRoute from "../routes/socialMedia.route.js";
 
 const app = express();
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapi));
 const PORT = Number(process.env.PORT) || 3000;
 
 // Register Middleware
